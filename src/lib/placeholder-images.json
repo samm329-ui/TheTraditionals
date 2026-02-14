@@ -1,0 +1,106 @@
+{
+  "placeholderImages": [
+    {
+      "id": "Black Designer Punjabi",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Punjabi/pun%201/Whisk_1c7579dda7ddb49b73e43825e4d32425dr.png",
+      "description": "Black Designer Punjabi",
+      "imageHint": "punjabi"
+    },
+    {
+      "id": "Navy Blue Designer Punjabi",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Punjabi/pun%202/Whisk_9f869d08ec5d7449e224dc71d1f4c638dr.png",
+      "description": "Navy Blue Designer Punjabi",
+      "imageHint": "punjabi"
+    },
+    {
+      "id": "White Punjabi",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Punjabi/pun%203/Whisk_0228967971b69c5b02f461d3125437dadr.png",
+      "description": "White Punjabi",
+      "imageHint": "punjabi"
+    },
+    {
+      "id": "Yellow Threaded Punjabi",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Punjabi/pun%204/Whisk_0acbe1a7634a7569a8d4440fbfed6485dr.png",
+      "description": "Yellow Threaded Punjabi",
+      "imageHint": "punjabi"
+    },
+    {
+      "id": "Yellow Stylish Punjabi",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Punjabi/pun%205/Whisk_8507f630a0a5e65b72f42861a78aa522dr.png",
+      "description": "Yellow Stylish Punjabi",
+      "imageHint": "punjabi"
+    },
+    {
+      "id": "Yellow Designer Punjabi",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Punjabi/pun%206/Whisk_2704ef4a9aadd44b56949efa3ab5a8fedr.png",
+      "description": "Yellow Designer Punjabi",
+      "imageHint": "punjabi"
+    },
+    {
+      "id": "White Minimalist Punjabi",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Punjabi/pun%207/Whisk_109b30d288fe06d826b4362ac53abae8dr.png",
+      "description": "White Minimalist Punjabi",
+      "imageHint": "punjabi"
+    },
+    {
+      "id": "Red Designer Punjabi",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Punjabi/pun%208/Whisk_06fc776642f7e0ba55d4efec5c09379ddr.png",
+      "description": "Red Designer Punjabi",
+      "imageHint": "punjabi"
+    },
+    {
+      "id": "Black Detailed Needlework Punjabi",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Punjabi/pun%209/Whisk_1bec8aeee84f774be4c40c33fbd9c111dr.png",
+      "description": "Black Detailed Needlework Punjabi",
+      "imageHint": "punjabi"
+    },
+    {
+      "id": "White Reversed Design Blouse",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Blouse/B1/Whisk_8bc224741376d30ae2444e84bb0ffbb5dr.png",
+      "description": "White Reversed Design Blouse",
+      "imageHint": "blouse"
+    },
+    {
+      "id": "Black Modern Blouse",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Blouse/B2/Whisk_40517421e220bd7b9a04bec3a5708c36dr.png",
+      "description": "Black Modern Blouse",
+      "imageHint": "blouse"
+    },
+    {
+      "id": "Royal Pink Reversed Design Blouse",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Blouse/B3/Whisk_a14fdc3bb0917fd88774a8e3f68fd695dr.png",
+      "description": "Royal Pink Reversed Design Blouse",
+      "imageHint": "blouse"
+    },
+    {
+      "id": "menu-card-1",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/Banner/banner%202.png",
+      "description": "Menu Page 1",
+      "imageHint": "menu"
+    },
+    {
+      "id": "menu-card-2",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/Banner/banner%202.png",
+      "description": "Menu Page 2",
+      "imageHint": "menu"
+    },
+    {
+      "id": "menu-card-3",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/Banner/banner%202.png",
+      "description": "Menu Page 3",
+      "imageHint": "menu"
+    },
+    {
+      "id": "menu-card-4",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/Banner/banner%202.png",
+      "description": "Menu Page 4",
+      "imageHint": "menu"
+    },
+    {
+      "id": "menu-card-5",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/Banner/banner%202.png",
+      "description": "Menu Page 5",
+      "imageHint": "menu"
+    }
+  ]
+}

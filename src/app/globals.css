@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Premium Light-Theme Luxury Palette */
+    /* Background: Warm cream/off-white */
+    --background: 38 45% 96%;
+    --foreground: 25 30% 15%;
+
+    /* Cards: Slightly warmer white with subtle texture feel */
+    --card: 35 40% 98%;
+    --card-foreground: 25 30% 15%;
+
+    /* Popover */
+    --popover: 35 40% 98%;
+    --popover-foreground: 25 30% 15%;
+
+    /* Primary: Antique gold accent */
+    --primary: 42 78% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary: Soft beige textile tones */
+    --secondary: 35 25% 88%;
+    --secondary-foreground: 25 30% 25%;
+
+    /* Muted: Very soft beige */
+    --muted: 35 20% 92%;
+    --muted-foreground: 25 20% 35%;
+
+    /* Accent: Antique gold (same as primary for consistency) */
+    --accent: 42 78% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Destructive: Warm red */
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Borders: Subtle textile tones */
+    --border: 35 20% 90%;
+    --input: 35 20% 90%;
+    --ring: 42 78% 55%;
+
+    /* Charts (if needed) */
+    --chart-1: 42 78% 55%;
+    --chart-2: 25 30% 15%;
+    --chart-3: 35 25% 88%;
+    --chart-4: 38 45% 96%;
+    --chart-5: 35 40% 98%;
+
+    /* Softer radius for traditional elegance */
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    position: relative;
+    font-family: var(--font-sans), sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  /* Typography Hierarchy */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading), serif;
+    font-weight: 600;
+  }
+
+  h1 {
+    font-weight: 700;
+  }
+}
+
+/* Premium Input Styling */
+.input {
+  border: 2px solid transparent;
+  width: 100%;
+  height: 2.5em;
+  padding-left: 2.5rem;
+  outline: none;
+  overflow: hidden;
+  background-color: hsl(var(--secondary));
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.input:hover,
+.input:focus {
+  border: 2px solid hsl(var(--primary));
+  box-shadow: 0px 0px 0px 4px hsl(var(--primary) / 0.1);
+  background-color: white;
+}
+
+.icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: hsl(var(--muted-foreground));
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none;
+}
