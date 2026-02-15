@@ -88,11 +88,9 @@ const MobileSearchHeader = ({ onSearch, searchQuery, allMenuItems, onProductSele
                                 onChange={(e) => onSearch(e.target.value)}
                                 suppressHydrationWarning
                             />
-                            {searchQuery && (
-                                <button onClick={() => onSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#1C1917]/40 hover:text-primary transition-colors">
-                                    <X className="h-4 w-4" />
-                                </button>
-                            )}
+                            <button onClick={() => onSearch('')} aria-label="Clear search" className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#1C1917]/40 hover:text-primary transition-colors">
+                                <X className="h-4 w-4" />
+                            </button>
                         </div>
                     </div>
                 </div>

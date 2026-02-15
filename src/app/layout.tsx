@@ -33,7 +33,7 @@ const businessSchema = {
   "url": siteUrl,
   "telephone": "+91-XXXXX-XXXXX",
   "priceRange": "₹₹-₹₹₹",
-  "image": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/hero%20video/hero%20vid.webp",
+  "image": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/Banner/banner%203.webp",
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "4.8",
@@ -187,8 +187,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  userScalable: true,
   themeColor: '#D4A574',
 };
 

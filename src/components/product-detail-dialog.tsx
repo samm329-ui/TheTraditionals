@@ -278,6 +278,39 @@ export const ProductDetailDialog = ({
                                         </Button>
                                     </div>
 
+                                    {/* Mobile Fixed Bottom Actions */}
+                                    <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/95 backdrop-blur-sm border-t border-border z-50 md:hidden flex flex-col gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+                                        {(() => {
+                                            const currentSizeCartItem = cart.find(ci => ci.name === item.name && ci.selectedSize === selectedSize);
+                                            return currentSizeCartItem ? (
+                                                <div className="w-full flex items-center justify-between gap-2 p-1 border-2 border-primary/20 bg-primary/5 rounded-xl">
+                                                    <Button variant="ghost" size="icon" className="h-11 w-11 rounded-lg text-primary hover:bg-primary/10" onClick={() => onRemoveFromCart(item.name, selectedSize)}>
+                                                        <Minus className="h-5 w-5" />
+                                                    </Button>
+                                                    <div className="flex flex-col items-center">
+                                                        <span className="font-bold text-lg text-primary leading-tight">{currentSizeCartItem.quantity}</span>
+                                                        {currentSizeCartItem.selectedSize && <span className="text-[10px] text-primary/70 uppercase">Size: {currentSizeCartItem.selectedSize}</span>}
+                                                    </div>
+                                                    <Button variant="ghost" size="icon" className="h-11 w-11 rounded-lg text-primary hover:bg-primary/10" onClick={() => onAddToCart(item, selectedSize)}>
+                                                        <Plus className="h-5 w-5" />
+                                                    </Button>
+                                                </div>
+                                            ) : (
+                                                <Button size="lg" className="w-full h-12 bg-primary hover:bg-primary/90 text-white rounded-xl shadow-premium font-semibold" onClick={() => onAddToCart(item, selectedSize)}>
+                                                    <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart {selectedSize && `(${selectedSize})`}
+                                                </Button>
+                                            );
+                                        })()}
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <Button variant="secondary" className="w-full" onClick={onCartClick}>
+                                                View Cart
+                                            </Button>
+                                            <Button variant="outline" className="w-full border-green-500 text-green-600 hover:bg-green-500 hover:text-white" onClick={() => setIsOrderFormOpen(true)}>
+                                                <WhatsappIcon className="mr-2 h-4 w-4" /> WhatsApp
+                                            </Button>
+                                        </div>
+                                    </div>
+
                                     {suggestedItems.length > 0 && (
                                         <div className="space-y-4 pt-8 mt-8 border-t">
                                             <h4 className="font-semibold text-lg text-[#3A2A1F]">You might also like</h4>
