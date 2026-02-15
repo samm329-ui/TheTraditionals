@@ -310,41 +310,7 @@ export const ProductDetailDialog = ({
                         </div>
                     </ScrollArea>
 
-                    {/* Mobile Sticky CTA */}
-                    <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/80 backdrop-blur-lg border-t md:hidden z-[101]">
-                        {(() => {
-                            const currentSizeCartItem = cart.find(ci => ci.name === item.name && ci.selectedSize === selectedSize);
-                            return currentSizeCartItem ? (
-                                <div className="flex items-center gap-3">
-                                    <div className="flex-grow flex items-center justify-between gap-2 p-1 border-2 border-primary/20 bg-primary/5 rounded-xl h-14">
-                                        <Button variant="ghost" size="icon" className="h-12 w-12 rounded-lg text-primary" onClick={() => onRemoveFromCart(item.name, selectedSize)}>
-                                            <Minus className="h-6 w-6" />
-                                        </Button>
-                                        <span className="font-bold text-xl text-primary">{currentSizeCartItem.quantity}</span>
-                                        <Button variant="ghost" size="icon" className="h-12 w-12 rounded-lg text-primary" onClick={() => onAddToCart(item, selectedSize)}>
-                                            <Plus className="h-6 w-6" />
-                                        </Button>
-                                    </div>
-                                    <Button size="lg" className="h-14 px-6 bg-[#3A2A1F] hover:bg-[#2a1e16] text-white rounded-xl shadow-lg border-none" asChild>
-                                        <Link href={`tel:${config.contact.phone}`} onClick={(e) => e.stopPropagation()}>
-                                            <Phone className="h-5 w-5" />
-                                        </Link>
-                                    </Button>
-                                </div>
-                            ) : (
-                                <div className="flex items-center gap-2">
-                                    <Button size="lg" className="flex-grow h-14 bg-primary hover:bg-primary/90 text-white rounded-xl shadow-premium font-bold text-lg" onClick={() => onAddToCart(item, selectedSize)}>
-                                        <ShoppingCart className="mr-2 h-6 w-6" /> Add for ₹{item.price}
-                                    </Button>
-                                    <Button size="lg" className="h-14 px-4 bg-[#3A2A1F] hover:bg-[#2a1e16] text-white rounded-xl shadow-lg border-none" asChild>
-                                        <Link href={`tel:${config.contact.phone}`} onClick={(e) => e.stopPropagation()}>
-                                            <Phone className="h-6 w-6" />
-                                        </Link>
-                                    </Button>
-                                </div>
-                            );
-                        })()}
-                    </div>
+
                 </DialogContent>
             </Dialog>
             <OrderFormDialog
