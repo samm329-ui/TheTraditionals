@@ -111,7 +111,9 @@ const MobileSearchHeader = ({ onSearch, searchQuery, allMenuItems, onProductSele
                                             return (
                                                 <button key={item.name} onClick={() => handleResultClick(item)} className="w-full text-left flex items-start gap-4 p-3 rounded-xl bg-white border border-[#E5D3B3]/20 hover:border-primary/30 transition-all duration-300">
                                                     <div className="relative w-16 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-[#f0ebe5]">
-                                                        {imageData ? (
+                                                        {item.images && item.images.length > 0 ? (
+                                                            <Image src={item.images[0]} alt={item.name} fill sizes="64px" className="object-cover" loading="lazy" quality={75} />
+                                                        ) : imageData ? (
                                                             <Image src={imageData.imageUrl} alt={item.name} fill sizes="64px" className="object-cover" loading="lazy" quality={75} />
                                                         ) : (
                                                             <div className="w-full h-full bg-[#E5D3B3]/20 flex items-center justify-center text-[#1C1917]/20">

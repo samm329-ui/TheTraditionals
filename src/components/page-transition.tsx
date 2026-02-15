@@ -9,9 +9,14 @@ export default function PageTransition({ children }: { children: React.ReactNode
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const isFirstRender = React.useRef(true);
 
     // Trigger loading state on route changes
     useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
         setIsTransitioning(true);
         const timer = setTimeout(() => {
             setIsTransitioning(false);

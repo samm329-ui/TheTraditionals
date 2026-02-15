@@ -66,6 +66,7 @@ export default function Home() {
   const handleCardClick = (item: Product) => {
     setSelectedItem(item);
     setIsDetailOpen(true);
+    // If detail is already open, this will trigger the useEffect in ProductDetailDialog
   };
 
   const handleRatingChange = (itemName: string, newRating: number) => {

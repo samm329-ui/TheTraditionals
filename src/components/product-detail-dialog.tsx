@@ -100,6 +100,14 @@ export const ProductDetailDialog = ({
         } else {
             setSelectedSize(undefined);
         }
+        setIsFullScreen(false);
+        setFullScreenImageIndex(0);
+
+        // Reset scroll position for the new product
+        const scrollViewport = document.querySelector('[data-radix-scroll-area-viewport]');
+        if (scrollViewport) {
+            scrollViewport.scrollTop = 0;
+        }
     }, [item]);
 
     // Create a temporary cart for the form that includes the current item
@@ -359,7 +367,7 @@ export const ProductDetailDialog = ({
 
             {/* Full Screen Image Viewer */}
             <Dialog open={isFullScreen} onOpenChange={setIsFullScreen}>
-                <DialogContent className="p-0 border-none bg-black/95 max-w-full w-full h-full flex flex-col items-center justify-center z-[100]">
+                <DialogContent className="p-0 border-none bg-black/95 max-w-full w-full h-[100dvh] flex flex-col items-center justify-center z-[150] shadow-none gap-0">
                     <div className="absolute top-4 right-4 z-[110]">
                         <Button
                             variant="ghost"
@@ -371,7 +379,7 @@ export const ProductDetailDialog = ({
                         </Button>
                     </div>
 
-                    <div className="relative w-full h-[80vh] flex items-center justify-center">
+                    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
                         {item.images && item.images.length > 0 && (
                             <Carousel
                                 className="w-full h-full max-w-4xl"
@@ -379,8 +387,8 @@ export const ProductDetailDialog = ({
                             >
                                 <CarouselContent className="h-full">
                                     {item.images.map((img, index) => (
-                                        <CarouselItem key={index} className="h-full flex items-center justify-center">
-                                            <div className="relative w-full h-full">
+                                        <CarouselItem key={index} className="h-full w-full flex items-center justify-center">
+                                            <div className="relative w-full h-full flex items-center justify-center p-4 md:p-12">
                                                 <Image
                                                     src={img}
                                                     alt={`${item.name} - Full image ${index + 1}`}
@@ -388,6 +396,7 @@ export const ProductDetailDialog = ({
                                                     className="object-contain"
                                                     quality={100}
                                                     priority
+                                                    loading="eager"
                                                 />
                                             </div>
                                         </CarouselItem>
