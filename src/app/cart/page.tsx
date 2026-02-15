@@ -38,7 +38,10 @@ export default function CartPage() {
 
     // Calculations
     const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-    const totalPrice = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const HANDLING_CHARGE = 5;
+    const DELIVERY_CHARGE = 40;
+    const totalPrice = subtotal + HANDLING_CHARGE + DELIVERY_CHARGE;
     const totalSavings = cart.reduce((total, item) => {
         if (item.originalPrice) {
             return total + (item.originalPrice - item.price) * item.quantity;
@@ -167,7 +170,15 @@ export default function CartPage() {
                             <div className="space-y-4 text-sm text-[#3A2A1F]/80">
                                 <div className="flex justify-between">
                                     <span>Subtotal</span>
-                                    <span className="font-medium">₹ {totalPrice.toLocaleString('en-IN')}</span>
+                                    <span className="font-medium">₹ {subtotal.toLocaleString('en-IN')}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span>Handling Charge</span>
+                                    <span className="font-medium">₹ {HANDLING_CHARGE}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span>Delivery Charge</span>
+                                    <span className="font-medium">₹ {DELIVERY_CHARGE}</span>
                                 </div>
                                 {totalSavings > 0 && (
                                     <div className="flex justify-between text-green-700">

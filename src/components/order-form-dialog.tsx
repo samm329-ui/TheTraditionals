@@ -35,7 +35,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { usePersistedForm } from '@/hooks/use-persisted-form';
 import { useToast } from '@/hooks/use-toast';
 import { config } from '@/lib/utils';
-import { Loader2, Truck, Star, MapPin, Phone, ArrowLeft, MessageCircle } from 'lucide-react';
+import { Loader2, Truck, Star, MapPin, Phone, ArrowLeft } from 'lucide-react';
+import { WhatsappIcon } from '@/components/icons';
 import { cn } from '@/lib/utils';
 
 const formSchema = z.object({
@@ -183,7 +184,10 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
         handleLocationRequest();
     };
 
-    const totalPrice = React.useMemo(() => cart.reduce((total, item) => total + (item.price * item.quantity), 0), [cart]);
+    const subtotal = React.useMemo(() => cart.reduce((total, item) => total + (item.price * item.quantity), 0), [cart]);
+    const HANDLING_CHARGE = 5;
+    const DELIVERY_CHARGE = 40;
+    const totalPrice = subtotal + HANDLING_CHARGE + DELIVERY_CHARGE;
 
     const isSubmitDisabled = (deliveryOption === 'delivery' && !isLocationVerified) || form.formState.isSubmitting;
 
@@ -258,7 +262,7 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
         }
 
 
-        const message = `Hello ${config.brandName}, I would like to place the following order:\n\n*Order Summary:*\n${orderDetails}\n\n*Total Order Value: ₹${totalPrice.toLocaleString('en-IN')}*\n\n${customerDetails}\n\nPlease confirm this order.`;
+        const message = `Hello ${config.brandName}, I would like to place the following order:\n\n*Order Summary:*\n${orderDetails}\n\nSubtotal: ₹${subtotal.toLocaleString('en-IN')}\nHandling Charge: ₹${HANDLING_CHARGE}\nDelivery Charge: ₹${DELIVERY_CHARGE}\n\n*Total Order Value: ₹${totalPrice.toLocaleString('en-IN')}*\n\n${customerDetails}\n\nPlease confirm this order.`;
 
         const whatsappUrl = `https://wa.me/91${config.contact.whatsapp}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
@@ -290,7 +294,7 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
                             <Button
                                 variant="ghost"
                                 size="sm"
-                                className="absolute left-4 top-4 text-[#3A2A1F]/60 hover:text-[#3A2A1F] hover:bg-[#C8A165]/10 rounded-full w-8 h-8 p-0"
+                                className="absolute left-4 top-6 text-[#3A2A1F]/60 hover:text-[#3A2A1F] hover:bg-[#C8A165]/10 rounded-full w-8 h-8 p-0 z-10"
                                 onClick={() => setOrderMode('selection')}
                             >
                                 <ArrowLeft className="w-5 h-5" />
@@ -317,7 +321,7 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
                                     >
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                                                <MessageCircle className="w-5 h-5 text-white" />
+                                                <WhatsappIcon className="w-5 h-5 text-white" />
                                             </div>
                                             <div className="text-left">
                                                 <div className="text-lg font-serif font-medium tracking-wide">Order via WhatsApp</div>

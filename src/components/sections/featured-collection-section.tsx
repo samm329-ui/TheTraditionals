@@ -7,16 +7,20 @@ import { Phone } from 'lucide-react';
 
 const featuredItems = [
     {
-        name: "Bridal Saree Collection",
-        description: "Handwoven Banarasi and Katan silk sarees with intricate zari work, crafted specifically for the modern bride who values tradition.",
-        imageUrl: "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Saree/S1/Whisk_8250104315_2.png",
-        cta: "View Bridal Collection"
+        name: "Blouse Collection",
+        description: "Exquisite hand-stitched designer blouses, tailored to perfection for a sophisticated and elegant look.",
+        imageUrl: "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Blouse/B15/Whisk_13be4602f306944ecbb4e27f062c3558c.png",
+        cta: "View Blouse Collection",
+        href: "#products",
+        category: "Blouse"
     },
     {
         name: "Festive Panjabi Series",
-        description: "A curate selection of premium cotton and silk punjabis featuring detailed embroidery, perfect for Durga Puja and festive celebrations.",
+        description: "A curated selection of premium cotton and silk punjabis featuring detailed embroidery, perfect for festive celebrations.",
         imageUrl: "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Punjabi/pun%209/Whisk_1bec8aeee84f774be4c40c33fbd9c111dr.png",
-        cta: "Shop Festive Wear"
+        cta: "Shop Panjabi Collection",
+        href: "#products",
+        category: "Panjabi"
     },
 ];
 
@@ -79,10 +83,24 @@ const FeaturedCollectionSection = () => {
                                     <p className="text-lg text-muted-foreground leading-relaxed">
                                         {item.description}
                                     </p>
-                                    <Button size="lg" className="bg-primary hover:bg-primary/90 text-white rounded-full px-10 h-14 text-lg shadow-xl shadow-primary/20" asChild>
-                                        <Link href="#products">
-                                            {item.cta}
-                                        </Link>
+                                    <Button
+                                        size="lg"
+                                        className="bg-primary hover:bg-primary/90 text-white rounded-full px-10 h-14 text-lg shadow-xl shadow-primary/20"
+                                        onClick={() => {
+                                            const productsSection = document.getElementById('products');
+                                            if (productsSection) {
+                                                productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                                // Trigger category filter after scroll
+                                                setTimeout(() => {
+                                                    const categoryButton = document.querySelector(`[data-category="${item.category}"]`);
+                                                    if (categoryButton instanceof HTMLElement) {
+                                                        categoryButton.click();
+                                                    }
+                                                }, 600);
+                                            }
+                                        }}
+                                    >
+                                        {item.cta}
                                     </Button>
                                 </div>
                             </div>

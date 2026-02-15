@@ -241,7 +241,7 @@ export default function Home() {
           <div className="md:hidden">
             <div className="mt-[-12px]">
               <Image
-                src="https://ihpfajyotvzcdqagdslw.supabase.co/storage/v1/object/public/Banner/banner-one.webp"
+                src="https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/Banner/banner%203.webp"
                 alt="Special Offer Banner"
                 width={1200}
                 height={400}
@@ -263,7 +263,7 @@ export default function Home() {
 
           <div className="hidden md:block my-12">
             <Image
-              src="https://ihpfajyotvzcdqagdslw.supabase.co/storage/v1/object/public/Banner/banner-one.webp"
+              src="https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/Banner/banner%20one.webp"
               alt="Special Offer Banner"
               width={1920}
               height={400}
@@ -280,7 +280,7 @@ export default function Home() {
 
           <div className="my-12 hidden md:block">
             <Image
-              src="https://ihpfajyotvzcdqagdslw.supabase.co/storage/v1/object/public/Banner/banner-two.webp"
+              src="https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/Banner/banner%204.webp"
               alt="Special Offer Banner"
               width={1920}
               height={400}
@@ -304,7 +304,7 @@ export default function Home() {
 
           <div className="md:hidden -mx-4">
             <Image
-              src="https://ihpfajyotvzcdqagdslw.supabase.co/storage/v1/object/public/Banner/banner-two.webp"
+              src="https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/Banner/banner%20two.webp"
               alt="Special Offer Banner"
               width={1200}
               height={400}

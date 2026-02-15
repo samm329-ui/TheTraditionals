@@ -89,7 +89,7 @@ const ReviewCard = ({ review }: { review: (typeof expandedReviews)[0] }) => {
         .slice(0, 2);
 
     return (
-        <div className="relative w-[350px] cursor-pointer overflow-hidden rounded-2xl border border-[#C8A165]/20 p-6 shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl bg-white/80 backdrop-blur-sm">
+        <div className="relative w-[350px] h-[280px] cursor-pointer overflow-hidden rounded-2xl border border-[#C8A165]/20 p-6 shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl bg-white/80 backdrop-blur-sm flex flex-col justify-between">
             {/* Decorative corner accent */}
             <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-[#C8A165]/10 to-transparent rounded-bl-full"></div>
 
@@ -104,13 +104,15 @@ const ReviewCard = ({ review }: { review: (typeof expandedReviews)[0] }) => {
             </div>
 
             {/* Review Text */}
-            <p className="text-[#3A2A1F]/80 text-sm leading-relaxed mb-6 relative z-10 font-body italic">
-                {review.review}
-            </p>
+            <div className="flex-grow">
+                <p className="text-[#3A2A1F]/80 text-sm leading-relaxed relative z-10 font-body italic line-clamp-4">
+                    {review.review}
+                </p>
+            </div>
 
             {/* Reviewer Info */}
-            <div className="flex items-center gap-3 pt-4 border-t border-[#C8A165]/10">
-                <Avatar className="h-12 w-12 border-2 border-[#C8A165]/30">
+            <div className="flex items-center gap-3 pt-4 border-t border-[#C8A165]/10 mt-auto">
+                <Avatar className="h-10 w-10 border-2 border-[#C8A165]/30 flex-shrink-0">
                     <AvatarImage
                         src={`https://ui-avatars.com/api/?name=${review.name}&background=F6F2EB&color=C8A165`}
                         alt={review.name}
@@ -119,9 +121,9 @@ const ReviewCard = ({ review }: { review: (typeof expandedReviews)[0] }) => {
                         {initials}
                     </AvatarFallback>
                 </Avatar>
-                <div className="text-left">
-                    <h3 className="font-heading font-bold text-sm text-[#3A2A1F]">{review.name}</h3>
-                    <p className="font-body text-xs text-[#3A2A1F]/60 uppercase tracking-wide">
+                <div className="text-left overflow-hidden">
+                    <h3 className="font-heading font-bold text-sm text-[#3A2A1F] truncate">{review.name}</h3>
+                    <p className="font-body text-xs text-[#3A2A1F]/60 uppercase tracking-wide truncate">
                         {review.title || 'Valued Customer'}
                     </p>
                 </div>

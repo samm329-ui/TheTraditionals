@@ -527,17 +527,17 @@ const MobileProductCard = ({ item, cart, onAddToCart, onRemoveFromCart, onCardCl
         </div>
     );
 
-    // Standard Clothing Card Layout for Mobile
+    // Improved Mobile Card Layout with Better Touch Targets
     return (
-        <div className="grid grid-cols-[110px_1fr] gap-4 w-full overflow-hidden bg-card rounded-2xl shadow-sm border border-border/50 p-3 items-start" onClick={() => onCardClick(item)}>
-            {/* Column 1: Image */}
+        <div className="grid grid-cols-[120px_1fr] gap-4 w-full overflow-hidden bg-card rounded-2xl shadow-sm border border-border/50 p-4 items-start min-h-[180px]" onClick={() => onCardClick(item)}>
+            {/* Column 1: Image - Improved Aspect Ratio */}
             <div className="relative w-full aspect-[3/4] flex-shrink-0">
                 {mainImage ? (
                     <Image
                         src={mainImage}
                         alt={item.description}
                         fill
-                        sizes="110px"
+                        sizes="120px"
                         className="object-cover rounded-xl"
                         loading="lazy"
                         quality={75}
@@ -557,13 +557,13 @@ const MobileProductCard = ({ item, cart, onAddToCart, onRemoveFromCart, onCardCl
             {/* Column 2: Content */}
             <div className="flex flex-col min-w-0 h-full justify-between py-1">
                 <div>
-                    <h3 className="font-heading font-bold text-base text-foreground truncate leading-tight">{item.name}</h3>
+                    <h3 className="font-heading font-bold text-base text-[#3A2A1F] truncate leading-tight">{item.name}</h3>
                     <div className="flex items-center gap-2 my-1.5">
                         <div className="flex items-center gap-0.5">
                             <Star className="h-3 w-3 text-primary fill-primary" />
-                            <span className="text-xs font-bold text-foreground">{item.rating.toFixed(1)}</span>
+                            <span className="text-xs font-bold text-[#3A2A1F]">{item.rating.toFixed(1)}</span>
                         </div>
-                        <span className="text-[10px] text-muted-foreground">({item.ratingsCount})</span>
+                        <span className="text-[10px] text-[#3A2A1F]/70">({item.ratingsCount})</span>
                     </div>
 
                     {item.sizes && item.sizes.length > 0 && (
@@ -573,7 +573,7 @@ const MobileProductCard = ({ item, cart, onAddToCart, onRemoveFromCart, onCardCl
                                     key={size}
                                     onClick={(e) => { e.stopPropagation(); setSelectedSize(size); }}
                                     className={cn(
-                                        "text-[9px] px-2 py-1 rounded border transition-all duration-200",
+                                        "min-w-[44px] min-h-[44px] text-xs px-3 py-2 rounded border transition-all duration-200 font-medium",
                                         selectedSize === size
                                             ? "bg-primary text-white border-primary shadow-sm"
                                             : "bg-secondary/30 border-border text-foreground/80 hover:border-primary/50"
@@ -818,7 +818,7 @@ const ProductSection = ({ allMenuItems, cart, onAddToCart, onRemoveFromCart, onC
 
                     <div className="text-center mb-16">
                         <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground">
-                            Our Collections
+                            Curated Collections
                         </h2>
                         <p className="font-body mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
                             Discover the art of traditional Bengali craftsmanship. Hand-stitched with love,
@@ -829,7 +829,7 @@ const ProductSection = ({ allMenuItems, cart, onAddToCart, onRemoveFromCart, onC
                         <div className="flex justify-center mb-8">
                             <TabsList className="h-auto flex-wrap justify-center">
                                 {allMenuItems.map((category) => (
-                                    <TabsTrigger key={category.name} value={category.name}>
+                                    <TabsTrigger key={category.name} value={category.name} data-category={category.name}>
                                         {category.name}
                                     </TabsTrigger>
                                 ))}
