@@ -1,9 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { Home, Info, ShoppingCart, Sparkles } from 'lucide-react';
+import { Home, Info, ShoppingCart, Sparkles, Compass } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { GoogleMapsIcon } from './icons';
 import { createPortal } from 'react-dom';
 import { useState, useEffect } from 'react';
 
@@ -18,10 +17,10 @@ type MobileBottomNavProps = {
 
 const navItems = [
   { href: '/', icon: Home, label: 'Home' },
-  { href: '/about', icon: Info, label: 'About Us' },
+  { href: '/about', icon: Info, label: 'About' },
   { href: '/cart', icon: ShoppingCart, label: 'Cart' },
-  { href: 'ai', icon: Sparkles, label: 'AI' },
-  { href: config.contact.location, icon: GoogleMapsIcon, label: 'Location' },
+  { href: 'ai', icon: Sparkles, label: 'Stylist' },
+  { href: config.contact.location, icon: Compass, label: 'Visit' },
 ];
 
 export function MobileBottomNav({ cartCount, onCartClick, onMenuClick, onAIClick }: MobileBottomNavProps) {
@@ -35,25 +34,23 @@ export function MobileBottomNav({ cartCount, onCartClick, onMenuClick, onAIClick
   if (!mounted) return null;
 
   return createPortal(
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-[#fcf7f3] border-t border-[#E5D3B3]/40 shadow-[0_-4px_10px_rgba(0,0,0,0.03)] z-[100] rounded-t-2xl">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#fcf7f3]/95 backdrop-blur-md border-t border-[#E5D3B3]/40 shadow-[0_-4px_20px_rgba(0,0,0,0.04)] z-[100] pb-safe">
       <div className="grid h-full grid-cols-5 items-center px-1">
         {navItems.map((item) => {
           const isExternal = item.href.startsWith('http');
-          const buttonBaseClass = "relative flex flex-col items-center justify-center text-center text-[#1C1917]/50 hover:text-primary transition-all duration-300 group w-full h-full pt-2 pb-4";
+          const buttonBaseClass = "relative flex flex-col items-center justify-center text-center text-[#1C1917]/60 hover:text-primary transition-all duration-300 group w-full h-full";
 
           const content = (
             <>
-              <div className="relative p-1 rounded-full group-hover:bg-primary/5 transition-colors duration-300 mb-1">
-                <item.icon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" strokeWidth={1.5} />
+              <div className="relative p-1 transition-colors duration-300">
+                <item.icon className="h-5 w-5 group-hover:scale-105 transition-transform duration-300" strokeWidth={1.2} />
                 {item.href === 'ai' && (
-                  <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-primary rounded-full animate-pulse" />
+                  <div className="absolute top-0 right-0 w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
                 )}
               </div>
-              <span className="text-[10px] font-medium tracking-wide uppercase">{item.label}</span>
+              <span className="text-[9px] font-medium tracking-widest uppercase mt-0.5 opacity-80 group-hover:opacity-100">{item.label}</span>
             </>
           );
-
-
 
           if (item.label === 'Cart') {
             return (
@@ -62,20 +59,18 @@ export function MobileBottomNav({ cartCount, onCartClick, onMenuClick, onAIClick
                 onClick={onCartClick}
                 className={buttonBaseClass}
               >
-                <div className="relative p-1 rounded-full group-hover:bg-primary/5 transition-colors duration-300 mb-1">
-                  <item.icon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" strokeWidth={1.5} />
+                <div className="relative p-1 transition-colors duration-300">
+                  <item.icon className="h-5 w-5 group-hover:scale-105 transition-transform duration-300" strokeWidth={1.2} />
                   {cartCount > 0 && (
-                    <Badge className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center rounded-full p-0 text-[10px] bg-primary text-white border border-[#fcf7f3]">
+                    <Badge className="absolute -top-1 -right-2 h-3.5 min-w-[14px] flex items-center justify-center rounded-full p-0 text-[8px] bg-primary text-white border border-[#fcf7f3] shadow-sm">
                       {cartCount}
                     </Badge>
                   )}
                 </div>
-                <span className="text-[10px] font-medium tracking-wide uppercase">{item.label}</span>
+                <span className="text-[9px] font-medium tracking-widest uppercase mt-0.5 opacity-80 group-hover:opacity-100">{item.label}</span>
               </button>
             );
           }
-
-          // Removed special button handler for 'menu' as it now links to /about directly
 
           if (item.href === 'ai') {
             return (
@@ -110,10 +105,10 @@ export function MobileBottomNav({ cartCount, onCartClick, onMenuClick, onAIClick
               href={item.href}
               className={buttonBaseClass}
             >
-              <div className="relative p-1 rounded-full group-hover:bg-primary/5 transition-colors duration-300 mb-1">
-                <item.icon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" strokeWidth={1.5} />
+              <div className="relative p-1 transition-colors duration-300">
+                <item.icon className="h-5 w-5 group-hover:scale-105 transition-transform duration-300" strokeWidth={1.2} />
               </div>
-              <span className="text-[10px] font-medium tracking-wide uppercase">{item.label}</span>
+              <span className="text-[9px] font-medium tracking-widest uppercase mt-0.5 opacity-80 group-hover:opacity-100">{item.label}</span>
             </Link>
           );
         })}
