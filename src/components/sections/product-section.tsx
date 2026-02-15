@@ -55,7 +55,7 @@ const PremiumProductCard = ({ item, cart, onAddToCart, onRemoveFromCart, onCardC
 
     return (
         <div className="flex flex-col w-full h-full overflow-hidden bg-[#F6F2EB] rounded-2xl shadow-premium border border-[#C8A165]/40 p-4" onClick={() => onCardClick(item)}>
-            <div className="relative w-full aspect-[4/5] overflow-hidden rounded-xl bg-white mb-4 frame-container">
+            <div className="relative w-full aspect-[4/5] overflow-hidden rounded-xl bg-white mb-4 royal-frame">
                 {mainImage ? (
                     <Image
                         src={mainImage}
@@ -137,7 +137,7 @@ const CategoryProductDialog = ({
     return (
         <Dialog open={isOpen} onOpenChange={onOpenChange}>
             <DialogContent className="p-0 w-full h-full max-w-full rounded-none border-0 flex flex-col top-0 left-0 translate-x-0 translate-y-0 data-[state=open]:animate-in data-[state=open]:zoom-in-90 data-[state=closed]:zoom-out-90 data-[state=closed]:animate-out overflow-hidden">
-                <DialogHeader className="p-4 border-b flex-row items-center justify-between sticky top-0 bg-[#F6F2EB] backdrop-blur-sm z-10">
+                <DialogHeader className="px-4 py-3 border-b flex-row items-center justify-between sticky top-0 bg-[#F6F2EB] backdrop-blur-sm z-10">
                     <DialogTitle className="text-xl text-[#3A2A1F] font-heading font-bold">{category.name}</DialogTitle>
                     <div className="flex items-center gap-2">
                         <Button variant="ghost" size="icon" className="relative text-[#3A2A1F]" onClick={onCartClick}>
@@ -157,21 +157,50 @@ const CategoryProductDialog = ({
                     </div>
                 </DialogHeader>
                 <ScrollArea className="flex-grow bg-[#F6F2EB]">
-                    <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4 p-4">
-                        {category.products.map(item => (
-                            <MobileProductCard
-                                key={item.name}
-                                item={item}
-                                cart={cart}
-                                onAddToCart={onAddToCart}
-                                onRemoveFromCart={onRemoveFromCart}
-                                onCardClick={onCardClick}
-                            />
-                        ))}
-                    </div>
+                    <DialogCategoryContent
+                        category={category}
+                        cart={cart}
+                        onAddToCart={onAddToCart}
+                        onRemoveFromCart={onRemoveFromCart}
+                        onCardClick={onCardClick}
+                    />
                 </ScrollArea>
             </DialogContent>
         </Dialog>
+    );
+};
+
+const DialogCategoryContent = ({ category, cart, onAddToCart, onRemoveFromCart, onCardClick }: any) => {
+    const [sort, setSort] = React.useState('default');
+    const sortedProducts = React.useMemo(() => {
+        let products = [...category.products];
+        if (sort === 'low-to-high') products.sort((a, b) => a.price - b.price);
+        if (sort === 'high-to-low') products.sort((a, b) => b.price - a.price);
+        if (sort === 'rating') products.sort((a, b) => b.rating - a.rating);
+        return products;
+    }, [category.products, sort]);
+
+    return (
+        <>
+            <div className="bg-[#F6F2EB] px-4 py-2 border-b flex items-center gap-2 overflow-x-auto no-scrollbar sticky top-0 z-10">
+                <span className="text-[10px] font-bold text-[#3A2A1F]/40 uppercase tracking-widest whitespace-nowrap">Sort:</span>
+                <Button variant={sort === 'low-to-high' ? 'default' : 'outline'} size="sm" className={cn("rounded-full h-7 text-[10px] px-3", sort === 'low-to-high' ? "bg-[#3A2A1F]" : "border-[#C8A165]/30 bg-white text-[#3A2A1F]")} onClick={() => setSort(sort === 'low-to-high' ? 'default' : 'low-to-high')}>Price: Low-High</Button>
+                <Button variant={sort === 'high-to-low' ? 'default' : 'outline'} size="sm" className={cn("rounded-full h-7 text-[10px] px-3", sort === 'high-to-low' ? "bg-[#3A2A1F]" : "border-[#C8A165]/30 bg-white text-[#3A2A1F]")} onClick={() => setSort(sort === 'high-to-low' ? 'default' : 'high-to-low')}>Price: High-Low</Button>
+                <Button variant={sort === 'rating' ? 'default' : 'outline'} size="sm" className={cn("rounded-full h-7 text-[10px] px-3", sort === 'rating' ? "bg-[#3A2A1F]" : "border-[#C8A165]/30 bg-white text-[#3A2A1F]")} onClick={() => setSort(sort === 'rating' ? 'default' : 'rating')}>Most Rated</Button>
+            </div>
+            <div className="grid grid-cols-2 gap-3 p-4">
+                {sortedProducts.map(item => (
+                    <MobileProductCard
+                        key={item.name}
+                        item={item}
+                        cart={cart}
+                        onAddToCart={onAddToCart}
+                        onRemoveFromCart={onRemoveFromCart}
+                        onCardClick={onCardClick}
+                    />
+                ))}
+            </div>
+        </>
     );
 };
 
@@ -292,7 +321,7 @@ const DesktopProductCard = ({ item, cart, onCardClick, onAddToCart, onRemoveFrom
             onClick={() => onCardClick(item)}
         >
             <div className="w-full h-full bg-card rounded-2xl border border-primary/10 flex flex-col group shadow-lg hover:shadow-[0_20px_50px_rgba(200,161,101,0.15)] transition-all duration-500 overflow-hidden relative">
-                <div className="relative w-full aspect-[3/4] overflow-hidden bg-white frame-container">
+                <div className="relative w-full aspect-[3/4] overflow-hidden bg-white royal-frame">
                     {mainImage ? (
                         <Image
                             src={mainImage}
@@ -596,7 +625,7 @@ const MobileProductCard = ({ item, cart, onAddToCart, onRemoveFromCart, onCardCl
     return (
         <div className="flex flex-col w-full h-full overflow-hidden bg-white rounded-xl shadow-lg border border-[#C8A165]/30 p-3" onClick={() => onCardClick(item)}>
             {/* Image Container - Improved Aspect Ratio */}
-            <div className="relative w-full aspect-[3/4] flex-shrink-0 frame-container">
+            <div className="relative w-full aspect-[3/4] flex-shrink-0 royal-frame">
                 {mainImage ? (
                     <Image
                         src={mainImage}
@@ -823,16 +852,16 @@ const MobileProductFilters = React.memo(({ allCategories, handleOpenCategoryDial
     handleOpenCategoryDialog: (category: Category) => void;
 }) => {
     return (
-        <div className="mx-4">
-            <div className="bg-white rounded-xl shadow-filters p-2">
+        <div className="mx-4 mt-6">
+            <div className="bg-white rounded-xl shadow-filters p-2 border border-[#C8A165]/20">
                 <div className="grid grid-cols-2 gap-2">
                     <Select onValueChange={(value) => {
                         if (value === 'all') {
                             return;
                         }
                         if (value === 'ai-suggestion') {
-                            // Open AI Sheet by clicking the AI button in bottom nav
-                            const aiButton = document.querySelector('button:has(.lucide-sparkles)') as HTMLButtonElement;
+                            // Find the AI button in the mobile nav and click it
+                            const aiButton = document.querySelector('button[suppressHydrationWarning]') as HTMLButtonElement;
                             if (aiButton) aiButton.click();
                             return;
                         }
@@ -842,10 +871,10 @@ const MobileProductFilters = React.memo(({ allCategories, handleOpenCategoryDial
                         }
                     }}
                     >
-                        <SelectTrigger className="h-12 bg-white text-foreground border-border rounded-xl text-[15px] font-medium px-[18px]">
+                        <SelectTrigger className="h-12 bg-[#F6F2EB]/50 text-[#3A2A1F] border-[#C8A165]/30 rounded-xl text-[14px] font-medium px-4">
                             <SelectValue placeholder="All Categories" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="rounded-xl border-[#C8A165]/20">
                             <SelectItem value="all">All Categories</SelectItem>
                             <SelectItem value="ai-suggestion" className="text-amber-600 font-medium">
                                 ✨ AI Suggestion
@@ -860,15 +889,18 @@ const MobileProductFilters = React.memo(({ allCategories, handleOpenCategoryDial
                             ))}
                         </SelectContent>
                     </Select>
-                    <Select defaultValue="popular">
-                        <SelectTrigger className="h-12 bg-white text-foreground border-border rounded-xl text-[15px] font-medium px-[18px]">
-                            <SelectValue placeholder="Sort by: Popular" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="popular">Sort by: Popular</SelectItem>
-                            <SelectItem value="rating">Sort by: Rating</SelectItem>
-                        </SelectContent>
-                    </Select>
+
+                    <Button
+                        variant="outline"
+                        className="h-12 w-full rounded-xl border-[#C8A165]/40 text-[#3A2A1F] hover:bg-[#F6F2EB] flex items-center justify-center gap-2 font-medium text-[14px] px-4"
+                        onClick={() => {
+                            const randomTip = styleTips[Math.floor(Math.random() * styleTips.length)];
+                            alert(`✨ Style Tip:\n\n${randomTip}`);
+                        }}
+                    >
+                        <Sparkles className="h-4 w-4 text-[#C8A165]" />
+                        Style Tip
+                    </Button>
                 </div>
             </div>
         </div>
