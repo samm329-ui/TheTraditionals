@@ -135,8 +135,9 @@ export const ProductDetailDialog = ({
                                                 {item.images.map((img, index) => (
                                                     <CarouselItem key={index} className="pl-0 h-full relative">
                                                         <div
-                                                            className="relative aspect-[3/4] md:h-full w-full cursor-zoom-in"
-                                                            onClick={() => {
+                                                            className="relative aspect-[3/4] md:h-full w-full cursor-zoom-in group/image"
+                                                            onClick={(e) => {
+                                                                // Prevent trigger if it was a drag/swipe
                                                                 setFullScreenImageIndex(index);
                                                                 setIsFullScreen(true);
                                                             }}
@@ -150,8 +151,8 @@ export const ProductDetailDialog = ({
                                                                 quality={85}
                                                                 priority={index === 0}
                                                             />
-                                                            <div className="absolute top-4 right-4 bg-black/20 backdrop-blur-md rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                                <Maximize2 className="h-4 w-4 text-white" />
+                                                            <div className="absolute bottom-4 right-4 md:top-4 md:right-4 bg-black/40 backdrop-blur-md rounded-full p-3 md:p-2 opacity-100 md:opacity-0 group-hover/image:opacity-100 transition-all duration-300 scale-100 md:scale-90 group-hover/image:scale-100 shadow-lg">
+                                                                <Maximize2 className="h-5 w-5 md:h-4 md:w-4 text-white" />
                                                             </div>
                                                         </div>
                                                     </CarouselItem>
@@ -367,12 +368,15 @@ export const ProductDetailDialog = ({
 
             {/* Full Screen Image Viewer */}
             <Dialog open={isFullScreen} onOpenChange={setIsFullScreen}>
-                <DialogContent className="p-0 border-none bg-black/95 max-w-full w-full h-[100dvh] flex flex-col items-center justify-center z-[150] shadow-none gap-0">
-                    <div className="absolute top-4 right-4 z-[110]">
+                <DialogContent
+                    className="p-0 border-none bg-black/98 fixed inset-0 w-screen h-[100dvh] flex flex-col items-center justify-center z-[150] shadow-none gap-0 translate-x-0 translate-y-0 left-0 top-0 max-w-none rounded-none"
+                    onPointerDownOutside={(e) => e.preventDefault()}
+                >
+                    <div className="absolute top-safe-4 right-4 z-[160] md:top-8 md:right-8">
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="text-white hover:bg-white/10 rounded-full h-12 w-12"
+                            className="text-white hover:bg-white/10 rounded-full h-12 w-12 bg-black/20 backdrop-blur-sm"
                             onClick={() => setIsFullScreen(false)}
                         >
                             <CloseIcon className="h-8 w-8" />
@@ -382,13 +386,13 @@ export const ProductDetailDialog = ({
                     <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
                         {item.images && item.images.length > 0 && (
                             <Carousel
-                                className="w-full h-full max-w-4xl"
+                                className="w-full h-full"
                                 opts={{ startIndex: fullScreenImageIndex }}
                             >
-                                <CarouselContent className="h-full">
+                                <CarouselContent className="h-full ml-0">
                                     {item.images.map((img, index) => (
-                                        <CarouselItem key={index} className="h-full w-full flex items-center justify-center">
-                                            <div className="relative w-full h-full flex items-center justify-center p-4 md:p-12">
+                                        <CarouselItem key={index} className="h-full w-full flex items-center justify-center pl-0">
+                                            <div className="relative w-full h-full flex items-center justify-center">
                                                 <Image
                                                     src={img}
                                                     alt={`${item.name} - Full image ${index + 1}`}
@@ -404,15 +408,31 @@ export const ProductDetailDialog = ({
                                 </CarouselContent>
                                 {item.images.length > 1 && (
                                     <>
-                                        <CarouselPrevious className="left-4 text-white hover:text-white/80 bg-white/10 hover:bg-white/20 border-white/20 h-12 w-12" />
-                                        <CarouselNext className="right-4 text-white hover:text-white/80 bg-white/10 hover:bg-white/20 border-white/20 h-12 w-12" />
+                                        <CarouselPrevious className="left-4 md:left-8 text-white hover:text-white/80 bg-black/20 hover:bg-black/40 border-none h-14 w-14" />
+                                        <CarouselNext className="right-4 md:right-8 text-white hover:text-white/80 bg-black/20 hover:bg-black/40 border-none h-14 w-14" />
                                     </>
                                 )}
                             </Carousel>
                         )}
                     </div>
-                    <div className="mt-4 text-white/70 font-medium text-lg">
-                        {item.name}
+
+                    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[160] text-center w-full px-4">
+                        <p className="text-white font-heading font-medium text-xl md:text-2xl drop-shadow-lg tracking-wide">
+                            {item.name}
+                        </p>
+                        {item.images && item.images.length > 1 && (
+                            <div className="flex justify-center gap-1.5 mt-4">
+                                {item.images.map((_, i) => (
+                                    <div
+                                        key={i}
+                                        className={cn(
+                                            "h-1 rounded-full transition-all duration-300",
+                                            i === fullScreenImageIndex ? "w-8 bg-[#C8A165]" : "w-2 bg-white/30"
+                                        )}
+                                    />
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </DialogContent>
             </Dialog>
