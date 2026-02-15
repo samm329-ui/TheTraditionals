@@ -30,6 +30,11 @@ const MobileHeroCarousel = ({ onCardClick, onAddToCart }: MobileHeroCarouselProp
     Autoplay({ delay: 2000, stopOnInteraction: false })
   );
 
+  const [isMounted, setIsMounted] = React.useState(false);
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const allItems = productData.flatMap(c => c.products);
   const carouselImages = carouselImageIds
     .map(id => {
@@ -50,7 +55,7 @@ const MobileHeroCarousel = ({ onCardClick, onAddToCart }: MobileHeroCarouselProp
     .filter((item): item is { img: NonNullable<typeof item.img>, menuItem: NonNullable<typeof item.menuItem> } => !!item.img && !!item.menuItem);
 
 
-  if (carouselImages.length === 0) {
+  if (!isMounted || carouselImages.length === 0) {
     return null;
   }
 
@@ -61,7 +66,7 @@ const MobileHeroCarousel = ({ onCardClick, onAddToCart }: MobileHeroCarouselProp
         className="w-full"
         opts={{
           align: 'start',
-          loop: true,
+          loop: false,
         }}
       >
         <CarouselContent>
@@ -70,7 +75,7 @@ const MobileHeroCarousel = ({ onCardClick, onAddToCart }: MobileHeroCarouselProp
               <div className="overflow-hidden rounded-xl aspect-[191/100] relative">
                 {img && (
                   <Image
-                    src={img.imageUrl}
+                    src={img.imageUrl.replace('.png', '.webp')}
                     alt={img.description}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"

@@ -9,7 +9,7 @@ const featuredItems = [
     {
         name: "Blouse Collection",
         description: "Exquisite hand-stitched designer blouses, tailored to perfection for a sophisticated and elegant look.",
-        imageUrl: "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Blouse/B15/Whisk_13be4602f306944ecbb4e27f062c3558c.png",
+        imageUrl: "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Blouse/B3/Whisk_a14fdc3bb0917fd88774a8e3f68fd695dr.webp",
         cta: "View Blouse Collection",
         href: "#products",
         category: "Blouse"

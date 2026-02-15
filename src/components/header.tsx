@@ -152,15 +152,17 @@ export default function Header({
             <span>AI Stylist</span>
           </Button>
 
-          <Button variant="ghost" size="icon" className={cn("relative hover:bg-primary/5 transition-colors duration-300", scrolled ? "text-foreground" : "text-white hover:text-white")} onClick={() => onCartToggle?.(true)}>
-            <ShoppingCart className="h-5 w-5" />
-            {totalCartItems > 0 && (
-              <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full flex items-center justify-center p-0 bg-[#C8A165] text-white text-[10px] font-bold border-[1.5px] border-background">
-                {totalCartItems}
-              </Badge>
-            )}
-            <span className="sr-only">View Cart</span>
-          </Button>
+          <Link href="/cart">
+            <Button variant="ghost" size="icon" className={cn("relative hover:bg-primary/5 transition-colors duration-300", scrolled ? "text-foreground" : "text-white hover:text-white")}>
+              <ShoppingCart className="h-5 w-5" />
+              {totalCartItems > 0 && (
+                <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full flex items-center justify-center p-0 bg-[#C8A165] text-white text-[10px] font-bold border-[1.5px] border-background">
+                  {totalCartItems}
+                </Badge>
+              )}
+              <span className="sr-only">View Cart</span>
+            </Button>
+          </Link>
         </div>
         <Button
           size="icon"

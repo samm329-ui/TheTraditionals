@@ -107,7 +107,7 @@ const CartSheet = ({
                                         <p className="font-bold text-base truncate">{item.name}</p>
                                         <div className="flex items-center gap-2 mt-0.5">
                                             <p className="text-sm font-semibold text-primary">
-                                                Rs. {item.price}
+                                                ₹{item.price.toLocaleString('en-IN')}
                                             </p>
                                             {item.selectedSize && (
                                                 <Badge variant="outline" className="h-5 px-1.5 text-[10px] font-bold uppercase tracking-wider bg-background/50">
@@ -127,7 +127,7 @@ const CartSheet = ({
                                             </Button>
                                         </div>
                                     </div>
-                                    <p className="font-bold w-20 text-right text-base text-foreground">Rs. {(item.price * item.quantity)}</p>
+                                    <p className="font-bold w-20 text-right text-base text-foreground">₹{(item.price * item.quantity).toLocaleString('en-IN')}</p>
                                 </div>
                             )
                         })}
@@ -142,14 +142,14 @@ const CartSheet = ({
                             <>
                                 <div className="flex justify-between items-center text-sm font-medium text-green-600">
                                     <span>Total Savings:</span>
-                                    <span>- Rs. {totalSavings.toFixed(2)}</span>
+                                    <span>- ₹{totalSavings.toLocaleString('en-IN')}</span>
                                 </div>
                                 <Separator className="bg-black/10" />
                             </>
                         )}
                         <div className="flex justify-between items-center font-bold text-xl pt-2">
                             <span>Grand Total:</span>
-                            <span>Rs. {totalPrice.toFixed(2)}</span>
+                            <span>₹{totalPrice.toLocaleString('en-IN')}</span>
                         </div>
                     </div>
                     <div className="flex flex-col gap-3 pt-2">

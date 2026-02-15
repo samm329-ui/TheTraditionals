@@ -19,7 +19,20 @@
 
     /* Primary: Antique gold accent */
     --primary: 42 78% 55%;
-    --primary-foreground: 0 0% 100%;
+    --primary-foreground: 38 45% 96%;
+
+    /* Muted deep brown for luxury feel */
+    --muted: 25 20% 94%;
+    --muted-foreground: 25 30% 35%;
+
+    /* Traditional Deep Brown for headings */
+    --accent: 25 30% 18%;
+    --accent-foreground: 38 45% 96%;
+
+    --brand-cream: #F6F2EB;
+    --brand-beige: #EFE6D8;
+    --brand-gold: #C8A165;
+    --brand-brown: #3A2A1F;
 
     /* Secondary: Soft beige textile tones */
     --secondary: 35 25% 88%;
@@ -65,9 +78,18 @@
     font-family: var(--font-sans), sans-serif;
   }
 
-  html {
+  html,
+  body {
+    box-sizing: border-box;
     scroll-behavior: smooth;
     overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
   }
 
   /* Typography Hierarchy */
@@ -99,6 +121,7 @@
   transition: all 0.3s ease;
   font-family: 'Inter', sans-serif;
 }
+
 
 .input:hover,
 .input:focus {
@@ -161,6 +184,11 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+/* Textile background utility */
+.bg-textile {
+  background-color: #F6F2EB;
+}
+
 /* Mobile Optimizations */
 @media (max-width: 768px) {
   body {
@@ -179,5 +207,13 @@
 
   html {
     font-size: clamp(14px, 2vw, 16px);
+  }
+
+  /* Fixed height and scroll issues for mobile */
+  html,
+  body {
+    height: auto !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
   }
 }

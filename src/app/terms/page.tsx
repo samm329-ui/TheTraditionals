@@ -12,35 +12,35 @@ export default function TermsPage() {
       </header>
       <main className="container mx-auto px-4 py-12">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-4xl font-bold text-foreground mb-6">Terms of Service</h1>
-          <div className="prose prose-lg text-muted-foreground space-y-4">
+          <h1 className="text-4xl font-heading font-bold text-[#3A2A1F] mb-8">Terms of Service</h1>
+          <div className="prose prose-lg text-[#3A2A1F]/70 space-y-6 font-body">
             <p>
-              Please read these Terms of Service carefully before using our website. Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users, and others who access or use the Service.
+              Welcome to <strong>The Traditional Needle Work</strong>. By accessing our website and using our services, you agree to comply with the following terms and conditions.
             </p>
 
-            <h2 className="text-2xl font-semibold text-foreground pt-4">Content</h2>
+            <h2 className="text-2xl font-heading font-bold text-[#3A2A1F] pt-4">1. Custom Orders & Sizing</h2>
             <p>
-              Our Service allows you to post, link, store, share and otherwise make available certain information, text, graphics, or other material. You are responsible for the content that you post on or through the Service, including its legality, reliability, and appropriateness.
+              Many of our products are handcrafted or custom-stitched to your specific measurements. Please ensure that the measurements provided are accurate. We are not responsible for fitting issues resulting from incorrect measurements provided by the customer.
             </p>
 
-            <h2 className="text-2xl font-semibold text-foreground pt-4">Intellectual Property</h2>
+            <h2 className="text-2xl font-heading font-bold text-[#3A2A1F] pt-4">2. Intellectual Property</h2>
             <p>
-              The Service and its original content (excluding Content provided by users), features, and functionality are and will remain the exclusive property of the restaurant and its licensors.
+              All content on this website, including designs, images, and embroidery patterns, is the exclusive property of <strong>The Traditional Needle Work</strong>. Unauthorized reproduction or use of our traditional designs is strictly prohibited.
             </p>
 
-            <h2 className="text-2xl font-semibold text-foreground pt-4">Links To Other Web Sites</h2>
+            <h2 className="text-2xl font-heading font-bold text-[#3A2A1F] pt-4">3. Shipping & Delivery</h2>
             <p>
-              Our Service may contain links to third-party web sites or services that are not owned or controlled by us. We have no control over, and assume no responsibility for, the content, privacy policies, or practices of any third-party web sites or services.
+              We ship products across India. While we strive for timely delivery, shipping times may vary depending on your location and the complexity of custom handicraft work. We are not liable for delays caused by third-party logistics partners.
             </p>
 
-            <h2 className="text-2xl font-semibold text-foreground pt-4">Governing Law</h2>
+            <h2 className="text-2xl font-heading font-bold text-[#3A2A1F] pt-4">4. Returns & Exchanges</h2>
             <p>
-              These Terms shall be governed and construed in accordance with the laws of the jurisdiction, without regard to its conflict of law provisions. Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights.
+              Due to the nature of handcrafted and custom-made traditional wear, we generally do not accept returns. Exchanges or alterations are handled on a case-by-case basis through our support team if a manufacturing defect is present.
             </p>
 
-            <h2 className="text-2xl font-semibold text-foreground pt-4">Changes</h2>
+            <h2 className="text-2xl font-heading font-bold text-[#3A2A1F] pt-4">5. Governing Law</h2>
             <p>
-              We reserve the right, at our sole discretion, to modify or replace these Terms at any time. What constitutes a material change will be determined at our sole discretion.
+              These terms are governed by the laws of West Bengal, India. Any disputes shall be subject to the exclusive jurisdiction of the courts in Birbhum.
             </p>
           </div>
         </div>

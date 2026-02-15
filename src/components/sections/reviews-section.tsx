@@ -89,7 +89,7 @@ const ReviewCard = ({ review }: { review: (typeof expandedReviews)[0] }) => {
         .slice(0, 2);
 
     return (
-        <div className="relative w-[350px] h-[280px] cursor-pointer overflow-hidden rounded-2xl border border-[#C8A165]/20 p-6 shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl bg-white/80 backdrop-blur-sm flex flex-col justify-between">
+        <div className="relative w-[280px] md:w-[350px] cursor-pointer overflow-hidden rounded-2xl border border-[#C8A165]/20 p-4 md:p-6 shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl bg-white/80 backdrop-blur-sm flex flex-col justify-between">
             {/* Decorative corner accent */}
             <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-[#C8A165]/10 to-transparent rounded-bl-full"></div>
 
@@ -97,15 +97,15 @@ const ReviewCard = ({ review }: { review: (typeof expandedReviews)[0] }) => {
             <div className="absolute top-3 left-3 text-[#C8A165]/10 font-serif text-6xl leading-none select-none">"</div>
 
             {/* Star Rating */}
-            <div className="flex gap-1 mb-4 relative z-10">
+            <div className="flex gap-1 mb-3 md:mb-4 relative z-10">
                 {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-[#C8A165] fill-[#C8A165]" />
+                    <Star key={i} className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#C8A165] fill-[#C8A165]" />
                 ))}
             </div>
 
             {/* Review Text */}
             <div className="flex-grow">
-                <p className="text-[#3A2A1F]/80 text-sm leading-relaxed relative z-10 font-body italic line-clamp-4">
+                <p className="text-[#3A2A1F]/80 text-xs md:text-sm leading-relaxed relative z-10 font-body italic line-clamp-3 md:line-clamp-4">
                     {review.review}
                 </p>
             </div>
@@ -138,7 +138,7 @@ const ReviewsSection = () => {
     const secondRow = expandedReviews.slice(Math.ceil(expandedReviews.length / 2));
 
     return (
-        <section id="reviews" className="py-20 md:py-32 bg-gradient-to-br from-[#F6F2EB] via-[#EFE6D8] to-[#F6F2EB] relative overflow-hidden">
+        <section id="reviews" className="hidden md:block py-20 md:py-32 bg-gradient-to-br from-[#F6F2EB] via-[#EFE6D8] to-[#F6F2EB] relative overflow-hidden">
             {/* Decorative background elements */}
             <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#C8A165]/30 to-transparent" />
             <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#C8A165]/30 to-transparent" />

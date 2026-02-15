@@ -38,6 +38,78 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { chat } from "@/ai/flows/chat";
 
 
+const PremiumProductCard = ({ item, cart, onAddToCart, onRemoveFromCart, onCardClick }: {
+    item: Product;
+    cart: CartItem[];
+    onAddToCart: (product: Product, size?: string) => void;
+    onRemoveFromCart: (itemName: string, size?: string) => void;
+    onCardClick: (product: Product) => void;
+}) => {
+    const [selectedSize, setSelectedSize] = React.useState<string | undefined>(item.sizes?.[0]);
+    const cartItem = React.useMemo(() => {
+        return cart.find(ci => ci.name === item.name && ci.selectedSize === selectedSize);
+    }, [cart, item.name, selectedSize]);
+
+    const mainImage = item.images && item.images.length > 0 ? item.images[0] : null;
+
+    return (
+        <div className="flex flex-col w-full h-full overflow-hidden bg-[#F6F2EB] rounded-2xl shadow-premium border border-[#C8A165]/40 p-4" onClick={() => onCardClick(item)}>
+            <div className="relative w-full aspect-[4/5] overflow-hidden rounded-xl bg-white mb-4">
+                {mainImage ? (
+                    <Image
+                        src={mainImage}
+                        alt={item.description}
+                        fill
+                        sizes="(max-width: 768px) 50vw, 200px"
+                        className="object-cover transition-transform duration-500 hover:scale-105"
+                        loading="lazy"
+                        quality={80}
+                    />
+                ) : (
+                    <div className="bg-secondary/30 w-full h-full rounded-xl flex items-center justify-center">
+                        <span className="text-sm text-muted-foreground">Premium Selection</span>
+                    </div>
+                )}
+                {item.originalPrice && (
+                    <Badge className="absolute top-2 right-2 bg-[#C8A165] text-white border-0 shadow-sm">PREMIUM</Badge>
+                )}
+            </div>
+
+            <div className="flex flex-col flex-1">
+                <h3 className="font-heading font-bold text-base text-[#3A2A1F] line-clamp-2 leading-snug mb-2">{item.name}</h3>
+
+                <div className="flex items-center gap-2 mb-3">
+                    <div className="flex items-center gap-0.5">
+                        <Star className="h-3 w-3 text-[#C8A165] fill-[#C8A165]" />
+                        <span className="text-xs font-bold text-[#3A2A1F]">{item.rating.toFixed(1)}</span>
+                    </div>
+                    <span className="text-[11px] text-[#3A2A1F]/60">({item.ratingsCount}+ reviews)</span>
+                </div>
+
+                <div className="mt-auto pt-3 border-t border-[#C8A165]/20">
+                    <div className="flex justify-between items-center mb-4">
+                        <div className="flex flex-col">
+                            <span className="text-[10px] text-[#3A2A1F]/50 uppercase tracking-wider font-medium">Starting from</span>
+                            <span className="font-heading font-bold text-lg text-[#3A2A1F]">₹{item.price.toLocaleString('en-IN')}</span>
+                        </div>
+                        {item.originalPrice && <del className="text-xs text-[#3A2A1F]/40 italic">₹{item.originalPrice.toLocaleString('en-IN')}</del>}
+                    </div>
+
+                    <Button
+                        className="w-full rounded-full bg-[#3A2A1F] text-[#F6F2EB] hover:bg-[#2a1e16] shadow-md transition-all h-10 font-serif text-sm border border-[#C8A165]/30 group"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onAddToCart(item, selectedSize);
+                        }}
+                    >
+                        {cartItem ? `In Cart (${cartItem.quantity})` : "View Details"}
+                    </Button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 const CategoryProductDialog = ({
     isOpen,
     onOpenChange,
@@ -57,62 +129,34 @@ const CategoryProductDialog = ({
     onCardClick: (product: Product) => void;
     onCartClick: () => void;
 }) => {
-    // const [aiSuggestion, setAiSuggestion] = React.useState<string | null>(null);
-    // const [isAiLoading, setIsAiLoading] = React.useState(false);
-    // const [showAiCard, setShowAiCard] = React.useState(true);
-
-    // Reset AI suggestion when dialog opens with new category
-    // React.useEffect(() => {
-    //     if (isOpen) {
-    //         setAiSuggestion(null);
-    //         setShowAiCard(true);
-    //     }
-    // }, [isOpen, category?.name]);
-
-    // const handleGetAiSuggestion = async () => {
-    //     if (!category) return;
-    //     setIsAiLoading(true);
-    //     try {
-    //         const response = await chat({
-    //             message: `${category.name} category থেকে সবচেয়ে ভালো product কোনটা? শুধু product এর নাম এবং কেন ভালো সেটা বলো।`,
-    //             userLocale: typeof navigator !== "undefined" ? navigator.language : "bn-IN",
-    //         });
-    //         setAiSuggestion(response.response);
-    //     } catch (error) {
-    //         setAiSuggestion("দুঃখিত, এখন suggestion দিতে পারছি না।");
-    //     } finally {
-    //         setIsAiLoading(false);
-    //     }
-    // };
-
     if (!category) return null;
     const totalCartItems = cart.reduce((total, pi) => total + pi.quantity, 0);
+    const isPremiumSarees = category.name === "Premium Sarees";
 
     return (
         <Dialog open={isOpen} onOpenChange={onOpenChange}>
-            <DialogContent className="p-0 w-full h-full max-w-full rounded-none border-0 flex flex-col top-0 left-0 translate-x-0 translate-y-0 data-[state=open]:animate-in data-[state=open]:zoom-in-90 data-[state=closed]:zoom-out-90 data-[state=closed]:animate-out">
-                <DialogHeader className="p-4 border-b flex-row items-center justify-between sticky top-0 bg-background/95 backdrop-blur-sm z-10">
-                    <DialogTitle className="text-xl">{category.name}</DialogTitle>
+            <DialogContent className="p-0 w-full h-full max-w-full rounded-none border-0 flex flex-col top-0 left-0 translate-x-0 translate-y-0 data-[state=open]:animate-in data-[state=open]:zoom-in-90 data-[state=closed]:zoom-out-90 data-[state=closed]:animate-out overflow-hidden">
+                <DialogHeader className="p-4 border-b flex-row items-center justify-between sticky top-0 bg-[#F6F2EB] backdrop-blur-sm z-10">
+                    <DialogTitle className="text-xl text-[#3A2A1F] font-heading font-bold">{category.name}</DialogTitle>
                     <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="icon" className="relative" onClick={onCartClick}>
+                        <Button variant="ghost" size="icon" className="relative text-[#3A2A1F]" onClick={onCartClick}>
                             <ShoppingCart className="h-5 w-5" />
                             {totalCartItems > 0 && (
-                                <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 rounded-full flex items-center justify-center p-1 text-xs">
+                                <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full flex items-center justify-center p-1 text-xs bg-[#C8A165] text-white border-0">
                                     {totalCartItems}
                                 </Badge>
                             )}
                             <span className="sr-only">View Cart</span>
                         </Button>
                         <DialogClose asChild>
-                            <Button variant="ghost" size="icon">
+                            <Button variant="ghost" size="icon" className="text-[#3A2A1F]/60">
                                 <X className="h-5 w-5" />
                             </Button>
                         </DialogClose>
                     </div>
                 </DialogHeader>
-                <ScrollArea className="flex-grow bg-background">
-                    <div className="p-4 space-y-4">
-
+                <ScrollArea className="flex-grow bg-[#F6F2EB]">
+                    <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4 p-4">
                         {category.products.map(item => (
                             <MobileProductCard
                                 key={item.name}
@@ -429,7 +473,7 @@ const ProductRow = React.memo(({
         <div className="w-full relative group/carousel">
             <Carousel
                 setApi={setLocalApi}
-                opts={{ align: "start", loop: true, dragFree: true }}
+                opts={{ align: "start", loop: false, dragFree: true }}
                 className="w-full"
             >
                 <CarouselContent className="-ml-4 py-8">
@@ -498,18 +542,38 @@ const MobileProductCard = ({ item, cart, onAddToCart, onRemoveFromCart, onCardCl
     const mainImage = item.images && item.images.length > 0 ? item.images[0] : null;
 
     const AddButton = ({ isSmall }: { isSmall?: boolean }) => (
-        <Button
-            className={cn(
-                "rounded-full bg-primary text-white hover:bg-primary/90 shadow-sm",
-                isSmall ? "px-4 h-8 text-xs" : "px-4 h-9"
-            )}
-            onClick={(e) => {
-                e.stopPropagation();
-                onAddToCart(item, selectedSize);
-            }}
-        >
-            <Plus className="mr-1 h-3 w-3" /> Add
-        </Button>
+        <div className="flex gap-2 w-full">
+            <Button
+                variant="outline"
+                className={cn(
+                    "flex-1 rounded-full border-primary text-primary hover:bg-primary hover:text-white shadow-sm transition-all",
+                    isSmall ? "h-8 text-[10px] px-2" : "h-9 text-xs px-3"
+                )}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    onAddToCart(item, selectedSize);
+                }}
+            >
+                Add to Cart
+            </Button>
+            <Button
+                className={cn(
+                    "flex-1 rounded-full bg-[#3A2A1F] text-[#F6F2EB] hover:bg-[#2a1e16] shadow-sm transition-all",
+                    isSmall ? "h-8 text-[10px] px-2" : "h-9 text-xs px-3"
+                )}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    onAddToCart(item, selectedSize);
+                    // Open cart - assuming parent handles this if we pass a callback or just standard add
+                    // Since 'Buy Now' usually implies immediate checkout, asking user to proceed to cart
+                    const cartButton = document.querySelector('a[href="/cart"] button') as HTMLButtonElement;
+                    if (cartButton) cartButton.click();
+                    else window.location.href = '/cart';
+                }}
+            >
+                Buy Now
+            </Button>
+        </div>
     );
 
     const QuantityCounter = ({ isSmall }: { isSmall?: boolean }) => (
@@ -527,17 +591,17 @@ const MobileProductCard = ({ item, cart, onAddToCart, onRemoveFromCart, onCardCl
         </div>
     );
 
-    // Improved Mobile Card Layout with Better Touch Targets
+    // Fluid Vertical Mobile Card Layout
     return (
-        <div className="grid grid-cols-[120px_1fr] gap-4 w-full overflow-hidden bg-card rounded-2xl shadow-sm border border-border/50 p-4 items-start min-h-[180px]" onClick={() => onCardClick(item)}>
-            {/* Column 1: Image - Improved Aspect Ratio */}
+        <div className="flex flex-col w-full h-full overflow-hidden bg-white rounded-xl shadow-lg border border-[#C8A165]/30 p-3" onClick={() => onCardClick(item)}>
+            {/* Image Container - Improved Aspect Ratio */}
             <div className="relative w-full aspect-[3/4] flex-shrink-0">
                 {mainImage ? (
                     <Image
                         src={mainImage}
                         alt={item.description}
                         fill
-                        sizes="120px"
+                        sizes="(max-width: 768px) 50vw, 160px"
                         className="object-cover rounded-xl"
                         loading="lazy"
                         quality={75}
@@ -554,44 +618,27 @@ const MobileProductCard = ({ item, cart, onAddToCart, onRemoveFromCart, onCardCl
                 )}
             </div>
 
-            {/* Column 2: Content */}
-            <div className="flex flex-col min-w-0 h-full justify-between py-1">
+            {/* Content Container */}
+            <div className="flex flex-col flex-1 min-w-0 mt-3 justify-between">
                 <div>
-                    <h3 className="font-heading font-bold text-base text-[#3A2A1F] truncate leading-tight">{item.name}</h3>
-                    <div className="flex items-center gap-2 my-1.5">
+                    <h3 className="font-heading font-bold text-sm text-[#3A2A1F] line-clamp-2 leading-tight min-h-[2.4em]">{item.name}</h3>
+                    <div className="flex items-center gap-1.5 my-1.5 flex-wrap">
                         <div className="flex items-center gap-0.5">
-                            <Star className="h-3 w-3 text-primary fill-primary" />
-                            <span className="text-xs font-bold text-[#3A2A1F]">{item.rating.toFixed(1)}</span>
+                            <Star className="h-2.5 w-2.5 text-[#C8A165] fill-[#C8A165]" />
+                            <span className="text-[10px] font-bold text-[#3A2A1F]">{item.rating.toFixed(1)}</span>
                         </div>
-                        <span className="text-[10px] text-[#3A2A1F]/70">({item.ratingsCount})</span>
+                        <span className="text-[9px] text-[#3A2A1F]/70">({item.ratingsCount})</span>
                     </div>
 
-                    {item.sizes && item.sizes.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5 mb-2">
-                            {item.sizes.map(size => (
-                                <button
-                                    key={size}
-                                    onClick={(e) => { e.stopPropagation(); setSelectedSize(size); }}
-                                    className={cn(
-                                        "min-w-[44px] min-h-[44px] text-xs px-3 py-2 rounded border transition-all duration-200 font-medium",
-                                        selectedSize === size
-                                            ? "bg-primary text-white border-primary shadow-sm"
-                                            : "bg-secondary/30 border-border text-foreground/80 hover:border-primary/50"
-                                    )}
-                                >
-                                    {size}
-                                </button>
-                            ))}
-                        </div>
-                    )}
                 </div>
 
-                <div className="flex justify-between items-end mt-2">
-                    <div className="flex flex-col">
-                        <span className="font-heading font-bold text-lg text-primary">₹{item.price}</span>
-                        {item.originalPrice && <del className="text-[10px] text-muted-foreground/70">₹{item.originalPrice}</del>}
+
+                <div className="flex flex-col gap-2 mt-auto">
+                    <div className="flex items-baseline gap-1">
+                        <span className="font-heading font-bold text-base text-[#3A2A1F]">₹{item.price}</span>
+                        {item.originalPrice && <del className="text-[9px] text-muted-foreground/70">₹{item.originalPrice}</del>}
                     </div>
-                    <div className="flex items-center gap-2 flex-shrink-0">
+                    <div className="w-full">
                         {cartItem ? <QuantityCounter isSmall /> : <AddButton isSmall />}
                     </div>
                 </div>
@@ -860,16 +907,16 @@ const ProductSection = ({ allMenuItems, cart, onAddToCart, onRemoveFromCart, onC
 
                     {allMenuItems.map((category) => {
                         const firstItem = category.products[0];
-                        const imageData = firstItem ? PlaceHolderImages.find(img => img.id === firstItem.name) : null;
+                        const imageUrl = firstItem?.images?.[0] || (firstItem ? PlaceHolderImages.find(img => img.id === firstItem.name)?.imageUrl : null);
                         const itemCount = category.products.length;
 
                         return (
                             <button key={category.name} onClick={() => handleOpenCategoryDialog(category)} className="border-0 bg-card rounded-2xl shadow-lg overflow-hidden text-left w-full focus:outline-none focus:ring-2 focus:ring-primary ring-offset-2 aspect-square group active:scale-[0.98] transition-transform" suppressHydrationWarning={true}>
                                 <div className="relative w-full h-full">
                                     <div className="absolute inset-0">
-                                        {imageData ? (
+                                        {imageUrl ? (
                                             <Image
-                                                src={imageData.imageUrl}
+                                                src={imageUrl}
                                                 alt={`Preview of ${category.name}`}
                                                 fill
                                                 sizes="(max-width: 768px) 50vw, 25vw"
@@ -895,6 +942,8 @@ const ProductSection = ({ allMenuItems, cart, onAddToCart, onRemoveFromCart, onC
                         )
                     })}
                 </div>
+
+                {/* Content above footer */}
                 <CategoryProductDialog
                     isOpen={isCategoryDialogOpen}
                     onOpenChange={setIsCategoryDialogOpen}

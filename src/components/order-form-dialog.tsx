@@ -14,6 +14,10 @@ import {
     DialogDescription,
     DialogFooter,
 } from '@/components/ui/dialog';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { format } from 'date-fns';
+import { CalendarIcon, Loader2, Truck, Star, MapPin, Phone, ArrowLeft } from 'lucide-react';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -35,39 +39,48 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { usePersistedForm } from '@/hooks/use-persisted-form';
 import { useToast } from '@/hooks/use-toast';
 import { config } from '@/lib/utils';
-import { Loader2, Truck, Star, MapPin, Phone, ArrowLeft } from 'lucide-react';
 import { WhatsappIcon } from '@/components/icons';
 import { cn } from '@/lib/utils';
 
 const formSchema = z.object({
     name: z.string().min(2, { message: "Name must be at least 2 characters." }),
     phone: z.string().min(10, { message: "Please enter a valid 10-digit phone number." }).max(15),
-    date: z.string().optional(),
-    time: z.string().optional(),
     deliveryOption: z.enum(['delivery', 'book-for-occasion'], { required_error: "Please select an option." }),
     address: z.string().optional(),
     pincode: z.string().optional(),
     paymentMethod: z.literal('pay-now'),
     utr: z.string().optional(),
+    landmark: z.string().optional(),
+    bookingDate: z.date().optional(),
+    email: z.string().email({ message: "Please enter a valid email address." }).optional().or(z.literal('')),
 }).superRefine((data, ctx) => {
-    if (data.deliveryOption === 'delivery') {
-        if (!data.address || data.address.length < 5) {
+    // Address validation for both options
+    if (!data.address || data.address.length < 5) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['address'],
+            message: 'Address is required.',
+        });
+    }
+    if (!data.pincode || data.pincode.length < 6) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['pincode'],
+            message: 'A valid 6-digit pincode is required.',
+        });
+    }
+
+    if (data.deliveryOption === 'book-for-occasion') {
+        if (!data.bookingDate) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                path: ['address'],
-                message: 'Address is required for delivery.',
-            });
-        }
-        if (!data.pincode || data.pincode.length < 6) {
-            ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                path: ['pincode'],
-                message: 'A valid 6-digit pincode is required for delivery.',
+                path: ['bookingDate'],
+                message: 'Please select a date for your occasion.',
             });
         }
     }
     if (data.paymentMethod === 'pay-now') {
-        if (!data.utr || data.utr.length < 12) {
+        if (!data.utr || !/^\d{12}$/.test(data.utr)) {
             ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['utr'], message: 'A valid 12-digit UPI Transaction ID is required.' });
         }
     }
@@ -109,11 +122,11 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
         defaultValues: {
             name: '',
             phone: '',
-            date: new Date().toISOString().split('T')[0],
-            time: '12:00',
             deliveryOption: 'delivery',
             address: '',
             pincode: '',
+            landmark: '',
+            email: '',
             paymentMethod: 'pay-now',
             utr: '',
         },
@@ -196,8 +209,8 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
             const transactionNote = cart.length > 1
                 ? `Cart order (${cart.length} items)`
                 : cart[0]?.name || 'Traditional Order';
-            const upiId = config.contact.upi;
-            const upiPayeeName = config.fullName;
+            const upiId = "6296187370@ybl";
+            const upiPayeeName = "Traditional Needle Work";
             const generatedUpiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(upiPayeeName)}&am=${totalPrice.toFixed(2)}&cu=INR&tn=${encodeURIComponent(transactionNote.substring(0, 49))}`;
             setUpiLink(generatedUpiLink);
 
@@ -231,28 +244,14 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
                 orderType = 'Not specified';
         }
 
-        let formattedDate = '';
-        if (data.date) {
-            formattedDate = new Date(data.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
-        }
-
-        let formattedTime = '';
-        if (data.time) {
-            const timeString = data.time;
-            const [hours, minutes] = timeString.split(':');
-            const hoursInt = parseInt(hours, 10);
-            const ampm = hoursInt >= 12 ? 'PM' : 'AM';
-            const formattedHours = hoursInt % 12 || 12;
-            formattedTime = `${String(formattedHours).padStart(2, '0')}:${minutes} ${ampm}`;
-        }
-
         let customerDetails = `*Customer Details:*\nName: ${data.name}\nPhone: ${data.phone}\nOrder Type: ${orderType}`;
 
-        if (formattedDate) customerDetails += `\nDate: ${formattedDate}`;
-        if (formattedTime) customerDetails += `\nTime: ${formattedTime}`;
+        if (data.deliveryOption === 'delivery' || data.deliveryOption === 'book-for-occasion') {
+            customerDetails += `\nAddress: ${data.address}\nLandmark: ${data.landmark || 'N/A'}\nPincode: ${data.pincode}\nEmail: ${data.email || 'N/A'}`;
+        }
 
-        if (data.deliveryOption === 'delivery') {
-            customerDetails += `\nAddress: ${data.address}\nPincode: ${data.pincode}`;
+        if (data.deliveryOption === 'book-for-occasion' && data.bookingDate) {
+            customerDetails += `\nBooking Date: ${format(data.bookingDate, 'PPP')}`;
         }
 
         const paymentMethodText = 'Paid via UPI';
@@ -273,18 +272,21 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
     return (
         <>
             <Dialog open={isOpen} onOpenChange={onOpenChange}>
-                <DialogContent className="w-[95vw] max-w-lg md:max-w-xl rounded-[20px] bg-[#F6F2EB] border-[1px] border-[#C8A165]/40 shadow-[0_10px_40px_rgba(58,42,31,0.15)] p-0 overflow-hidden flex flex-col max-h-[90vh]">
+                <DialogContent
+                    className="w-[95vw] max-w-lg md:max-w-xl rounded-[20px] bg-[#F6F2EB] bg-textile border-[1px] border-[#C8A165]/40 shadow-[0_10px_40px_rgba(58,42,31,0.15)] p-0 overflow-y-auto flex flex-col max-h-[90vh]"
+                    onInteractOutside={(e) => e.preventDefault()}
+                >
 
                     {/* Header with Textile Design Hint */}
                     <div className="relative bg-[#F6F2EB] p-6 pb-2 text-center border-b border-[#C8A165]/10">
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#C8A165]/40 to-transparent"></div>
                         <DialogHeader>
-                            <DialogTitle className="font-serif text-2xl md:text-3xl text-[#3A2A1F] tracking-wide font-medium">
+                            <DialogTitle className="font-heading text-2xl md:text-3xl text-[#3A2A1F] tracking-wide font-bold">
                                 {orderMode === 'selection' ? 'Choose Order Method' :
                                     orderMode === 'call' ? 'Call to Order' : 'Complete Your Order'}
                             </DialogTitle>
                             {orderMode === 'selection' && (
-                                <DialogDescription className="text-[#3A2A1F]/60 font-sans mt-1">
+                                <DialogDescription className="text-[#3A2A1F]/70 font-sans mt-2">
                                     Select how you would like to proceed with your traditional masterpiece.
                                 </DialogDescription>
                             )}
@@ -309,7 +311,7 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
                         </div>
                     </div>
 
-                    <ScrollArea className="flex-grow">
+                    <div className="flex-1 overflow-y-auto custom-scrollbar">
                         <div className="p-6 md:p-8">
 
                             {/* SELECTION MODE */}
@@ -425,6 +427,53 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
                                                 )}
                                             />
 
+                                            {deliveryOption === 'book-for-occasion' && (
+                                                <FormField
+                                                    control={form.control}
+                                                    name="bookingDate"
+                                                    render={({ field }) => (
+                                                        <FormItem className="flex flex-col bg-white/50 p-5 rounded-2xl border border-[#C8A165]/20">
+                                                            <FormLabel className="text-sm font-serif uppercase tracking-widest text-[#3A2A1F]/70 mb-2">Select Occasion Date</FormLabel>
+                                                            <Popover>
+                                                                <PopoverTrigger asChild>
+                                                                    <FormControl>
+                                                                        <Button
+                                                                            variant={"outline"}
+                                                                            className={cn(
+                                                                                "w-full pl-3 text-left font-normal h-12 rounded-xl bg-white border-[#C8A165]/20",
+                                                                                !field.value && "text-muted-foreground"
+                                                                            )}
+                                                                        >
+                                                                            {field.value ? (
+                                                                                format(field.value, "PPP")
+                                                                            ) : (
+                                                                                <span>Pick a date</span>
+                                                                            )}
+                                                                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                                        </Button>
+                                                                    </FormControl>
+                                                                </PopoverTrigger>
+                                                                <PopoverContent className="w-auto p-0" align="start">
+                                                                    <Calendar
+                                                                        mode="single"
+                                                                        selected={field.value}
+                                                                        onSelect={field.onChange}
+                                                                        disabled={(date) =>
+                                                                            date < new Date() || date < new Date("1900-01-01")
+                                                                        }
+                                                                        initialFocus
+                                                                    />
+                                                                </PopoverContent>
+                                                            </Popover>
+                                                            <FormDescription className="text-[10px] text-[#3A2A1F]/60 px-1">
+                                                                * Book in advance for special tailoring or occasions.
+                                                            </FormDescription>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            )}
+
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 <FormField
                                                     control={form.control}
@@ -454,29 +503,15 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
                                                 />
                                             </div>
 
-                                            {/* Date/Time Row */}
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 <FormField
                                                     control={form.control}
-                                                    name="date"
+                                                    name="email"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel className="text-[#3A2A1F] font-serif">Date</FormLabel>
+                                                            <FormLabel className="text-[#3A2A1F] font-serif">Email (Optional)</FormLabel>
                                                             <FormControl>
-                                                                <Input type="date" {...field} className="bg-white border-[#C8A165]/20 focus:border-[#C8A165] focus:ring-[#C8A165]/20 block w-full" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={form.control}
-                                                    name="time"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="text-[#3A2A1F] font-serif">Time</FormLabel>
-                                                            <FormControl>
-                                                                <Input type="time" {...field} className="bg-white border-[#C8A165]/20 focus:border-[#C8A165] focus:ring-[#C8A165]/20 block w-full" />
+                                                                <Input type="email" placeholder="Email Address" {...field} className="bg-white border-[#C8A165]/20 focus:border-[#C8A165] focus:ring-[#C8A165]/20" />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
@@ -484,7 +519,7 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
                                                 />
                                             </div>
 
-                                            {deliveryOption === 'delivery' && (
+                                            {(deliveryOption === 'delivery' || deliveryOption === 'book-for-occasion') && (
                                                 <div className="bg-white/50 p-5 rounded-2xl border border-[#C8A165]/20 space-y-4">
                                                     <FormField
                                                         control={form.control}
@@ -510,19 +545,34 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
                                                             {isLocationVerified ? 'Location Verified' : 'Use Current Location'}
                                                         </Button>
                                                     </div>
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="pincode"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel className="text-[#3A2A1F] font-serif">Pincode</FormLabel>
-                                                                <FormControl>
-                                                                    <Input type="number" placeholder="6-digit Pincode" {...field} className="bg-white border-[#C8A165]/20 focus:border-[#C8A165] focus:ring-[#C8A165]/20" />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="pincode"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel className="text-[#3A2A1F] font-serif">Pincode</FormLabel>
+                                                                    <FormControl>
+                                                                        <Input type="number" placeholder="6-digit Pincode" {...field} className="bg-white border-[#C8A165]/20 focus:border-[#C8A165] focus:ring-[#C8A165]/20" />
+                                                                    </FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="landmark"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel className="text-[#3A2A1F] font-serif">Landmark</FormLabel>
+                                                                    <FormControl>
+                                                                        <Input placeholder="Near..." {...field} className="bg-white border-[#C8A165]/20 focus:border-[#C8A165] focus:ring-[#C8A165]/20" />
+                                                                    </FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    </div>
                                                 </div>
                                             )}
 
@@ -555,7 +605,7 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
                                                                         }
                                                                     }}
                                                                 >
-                                                                    Open UPI App
+                                                                    Pay via UPI App
                                                                 </Button>
                                                             </>
                                                         ) : (
@@ -591,7 +641,7 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
                             )}
 
                         </div>
-                    </ScrollArea>
+                    </div>
 
                     {orderMode === 'whatsapp' && (
                         <div className="p-4 bg-[#F8F5F0] border-t border-[#C8A165]/20">
@@ -606,13 +656,13 @@ export function OrderFormDialog({ isOpen, onOpenChange, cart }: OrderFormDialogP
                         </div>
                     )}
                 </DialogContent>
-            </Dialog>
+            </Dialog >
             <AlertDialog open={showOutOfRangeDialog} onOpenChange={setShowOutOfRangeDialog}>
                 {/* ... existing alert dialog content ... */}
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>🚫 Oops! Delivery Not Available</AlertDialogTitle>
-                        <AlertDialogDescription>
+                        <AlertDialogTitle className="text-[#3A2A1F]">🚫 Oops! Delivery Not Available</AlertDialogTitle>
+                        <AlertDialogDescription className="text-[#3A2A1F]/70">
                             Your location is outside our {DELIVERY_RADIUS_KM} km delivery radius. You can still place an order for Take Away.
                         </AlertDialogDescription>
                     </AlertDialogHeader>

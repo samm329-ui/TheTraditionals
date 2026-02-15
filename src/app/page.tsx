@@ -24,6 +24,7 @@ const Footer = dynamic(() => import("@/components/footer"));
 const WriteReviewSection = dynamic(() => import("@/components/sections/write-review-section"));
 const ContactSection = dynamic(() => import("@/components/sections/contact-section"));
 const ProductDetailDialog = dynamic(() => import("@/components/product-detail-dialog").then(mod => mod.ProductDetailDialog));
+const CartSheet = dynamic(() => import("@/components/cart-sheet"));
 
 const MenuDialog = dynamic(() => import("@/components/menu-dialog").then(mod => mod.MenuDialog));
 
@@ -204,8 +205,8 @@ export default function Home() {
       description: `${items.length} items have been added to your cart.`,
     });
 
-    // Open cart sheet after adding
-    setTimeout(() => setIsCartOpen(true), 500);
+    // Navigate to cart page instead of opening sheet
+    router.push('/cart');
   };
 
   return (
@@ -220,8 +221,7 @@ export default function Home() {
           onDropdownOpenChange={setIsDropdownOpen}
           onProductSelect={handleCardClick}
           isMobile={false}
-          isCartOpen={isCartOpen}
-          onCartToggle={setIsCartOpen}
+          onCartToggle={() => router.push('/cart')}
         />
       </div>
 
@@ -263,7 +263,7 @@ export default function Home() {
 
           <div className="hidden md:block my-12">
             <Image
-              src="https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/Banner/banner%20one.webp"
+              src="https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/Banner/banner%203.webp"
               alt="Special Offer Banner"
               width={1920}
               height={400}
@@ -299,25 +299,30 @@ export default function Home() {
             onCardClick={handleCardClick}
             onRate={handleRatingChange}
             searchQuery={searchQuery}
-            onCartClick={() => setIsCartOpen(true)}
+            onCartClick={() => router.push('/cart')}
           />
 
-          <div className="md:hidden -mx-4">
-            <Image
-              src="https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/Banner/banner%20two.webp"
-              alt="Special Offer Banner"
-              width={1200}
-              height={400}
-              className="object-cover w-full"
-              sizes="100vw"
-              quality={75}
-              loading="lazy"
-            />
+          <div className="md:hidden -mx-4 mt-8">
+            <div className="relative aspect-[21/9] w-full">
+              <Image
+                src="https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/Banner/banner%204.webp"
+                alt="Special Offer Banner"
+                fill
+                className="object-cover"
+                sizes="100vw"
+                quality={75}
+                loading="lazy"
+              />
+            </div>
           </div>
 
-          <ReviewsSection />
+          <div className="hidden md:block">
+            <ReviewsSection />
+          </div>
           <CustomDesignSection />
-          <WriteReviewSection onReviewSubmit={handleReviewSubmit} />
+          <div className="hidden md:block">
+            <WriteReviewSection onReviewSubmit={handleReviewSubmit} />
+          </div>
           <ContactSection />
           <div className="hidden md:block">
             <RecommendationSection />
@@ -328,7 +333,7 @@ export default function Home() {
 
       <MobileBottomNav
         cartCount={totalCartItems}
-        onCartClick={() => setIsCartOpen(true)}
+        onCartClick={() => router.push('/cart')}
         onMenuClick={() => setIsMenuDialogOpen(true)}
         onAIClick={() => setIsAIOpen(true)}
       />
@@ -364,6 +369,15 @@ export default function Home() {
           onSelectItem={handleCardClick}
         />
       )}
+
+      <CartSheet
+        isOpen={isCartOpen}
+        onOpenChange={setIsCartOpen}
+        cart={cart}
+        onEmptyCart={handleEmptyCart}
+        onAddToCart={handleAddToCart}
+        onRemoveFromCart={handleRemoveFromCart}
+      />
     </>
   );
 }

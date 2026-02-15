@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { config } from '@/lib/utils';
 import { productData } from '@/lib/products';
 
-const siteUrl = 'https://www.traditionalneedlework.in';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.thetraditionalneedlework.in';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [

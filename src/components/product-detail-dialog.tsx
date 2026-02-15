@@ -113,186 +113,226 @@ export const ProductDetailDialog = ({
     return (
         <React.Fragment>
             <Dialog open={isOpen} onOpenChange={onOpenChange}>
-                <DialogContent className="p-0 w-full h-full max-w-full md:max-w-4xl md:h-auto md:max-h-[600px] flex flex-col md:flex-row rounded-none md:rounded-lg border-0 top-0 left-0 translate-x-0 translate-y-0 md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 data-[state=open]:animate-in data-[state=open]:zoom-in-90 data-[state=closed]:zoom-out-90 data-[state=closed]:animate-out">
-                    {/* Image Section - Multi-Image Carousel */}
-                    <div className="w-full md:w-1/2 relative h-[50%] md:h-auto flex-shrink-0 bg-secondary/20">
-                        {item.images && item.images.length > 0 ? (
-                            <Carousel className="w-full h-full group">
-                                <CarouselContent className="h-full ml-0">
-                                    {item.images.map((img, index) => (
-                                        <CarouselItem key={index} className="pl-0 h-full relative">
-                                            <div className="relative aspect-[3/4] md:h-full w-full">
-                                                <Image
-                                                    src={img}
-                                                    alt={`${item.name} - image ${index + 1}`}
-                                                    fill
-                                                    sizes="(max-width: 768px) 100vw, 50vw"
-                                                    className="object-cover md:rounded-l-lg"
-                                                    quality={85}
-                                                    priority={index === 0}
-                                                />
-                                            </div>
-                                        </CarouselItem>
-                                    ))}
-                                </CarouselContent>
-                                {item.images.length > 1 && (
-                                    <>
-                                        <CarouselPrevious className="left-2 opacity-0 group-hover:opacity-100 transition-opacity bg-background/50 border-none" />
-                                        <CarouselNext className="right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-background/50 border-none" />
-                                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 px-3 py-1.5 rounded-full bg-black/20 backdrop-blur-md z-10">
-                                            {item.images.map((_, i) => (
-                                                <div key={i} className="w-1.5 h-1.5 rounded-full bg-white opacity-50" />
-                                            ))}
-                                        </div>
-                                    </>
-                                )}
-                                {discount > 0 && <Badge variant="destructive" className="absolute top-4 right-4 text-base px-3 py-1 z-10">{discount}% OFF</Badge>}
-                            </Carousel>
-                        ) : (
-                            <div className="w-full h-full bg-secondary flex items-center justify-center md:rounded-l-lg">
-                                <span className="text-muted-foreground">No Image</span>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Details Section */}
-                    <div className="w-full md:w-1/2 bg-background md:rounded-r-lg flex flex-col flex-grow min-h-0">
-                        <ScrollArea className="h-full">
-                            <div className="p-6 md:p-8">
-                                <DialogHeader className="text-left mb-6">
-                                    <DialogTitle className="text-3xl md:text-4xl font-heading font-bold tracking-tight text-foreground">{item.name}</DialogTitle>
-                                    <DialogDescription className="text-base font-body text-muted-foreground pt-3 leading-relaxed">{item.description}</DialogDescription>
-                                </DialogHeader>
-
-                                <div className="flex items-baseline gap-3 mb-8">
-                                    <span className="font-bold text-4xl text-primary">Rs. {item.price}</span>
-                                    {item.originalPrice && <del className="text-xl text-muted-foreground decoration-primary/30">Rs. {item.originalPrice}</del>}
-                                </div>
-
-                                {item.sizes && item.sizes.length > 0 && (
-                                    <div className="mb-8 space-y-3">
-                                        <div className="flex justify-between items-center">
-                                            <h4 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">Available Sizes</h4>
-                                            <span className="text-xs text-primary font-medium">Size Guide</span>
-                                        </div>
-                                        <div className="flex flex-wrap gap-2">
-                                            {item.sizes.map(size => (
-                                                <Button
-                                                    key={size}
-                                                    variant={selectedSize === size ? "default" : "outline"}
-                                                    size="sm"
-                                                    className={cn(
-                                                        "min-w-[3rem] h-10 rounded-lg transition-all",
-                                                        selectedSize === size ? "bg-primary text-white shadow-premium scale-105" : "hover:border-primary hover:text-primary bg-background"
-                                                    )}
-                                                    onClick={() => setSelectedSize(size)}
-                                                >
-                                                    {size}
-                                                </Button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-
-                                <Separator />
-
-                                <div className="my-6 space-y-6">
-                                    <div className="space-y-2">
-                                        <h4 className="font-semibold text-lg">Ratings</h4>
-                                        <div className="flex items-center gap-2">
-                                            <div className="flex items-center">
-                                                {Array.from({ length: 5 }).map((_, i) => (
-                                                    <Star key={i} className={cn("h-5 w-5", i < Math.round(currentRating) ? "text-accent fill-accent" : "text-muted-foreground/50")} />
+                <DialogContent className="p-0 w-full h-full max-w-full md:max-w-4xl md:h-auto md:max-h-[600px] flex flex-col md:flex-row rounded-none md:rounded-lg border-0 top-0 left-0 translate-x-0 translate-y-0 md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 data-[state=open]:animate-in data-[state=open]:zoom-in-90 data-[state=closed]:zoom-out-90 data-[state=closed]:animate-out overflow-hidden">
+                    <ScrollArea className="w-full h-full">
+                        <div className="flex flex-col md:flex-row min-h-full">
+                            {/* Image Section - Multi-Image Carousel */}
+                            <div className="w-full md:w-1/2 relative flex-shrink-0 bg-secondary/20">
+                                <div className="relative w-full aspect-square md:aspect-auto md:h-full">
+                                    {item.images && item.images.length > 0 ? (
+                                        <Carousel className="w-full h-full group">
+                                            <CarouselContent className="h-full ml-0">
+                                                {item.images.map((img, index) => (
+                                                    <CarouselItem key={index} className="pl-0 h-full relative">
+                                                        <div className="relative aspect-[3/4] md:h-full w-full">
+                                                            <Image
+                                                                src={img}
+                                                                alt={`${item.name} - image ${index + 1}`}
+                                                                fill
+                                                                sizes="(max-width: 768px) 100vw, 50vw"
+                                                                className="object-contain md:object-cover md:rounded-l-lg"
+                                                                quality={85}
+                                                                priority={index === 0}
+                                                            />
+                                                        </div>
+                                                    </CarouselItem>
                                                 ))}
-                                            </div>
-                                            <span className="text-sm text-muted-foreground">
-                                                {currentRating.toFixed(1)} ({ratingsCount} ratings)
-                                            </span>
+                                            </CarouselContent>
+                                            {item.images.length > 1 && (
+                                                <>
+                                                    <CarouselPrevious className="left-2 opacity-0 group-hover:opacity-100 transition-opacity bg-background/50 border-none" />
+                                                    <CarouselNext className="right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-background/50 border-none" />
+                                                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 px-3 py-1.5 rounded-full bg-black/20 backdrop-blur-md z-10">
+                                                        {item.images.map((_, i) => (
+                                                            <div key={i} className="w-1.5 h-1.5 rounded-full bg-white opacity-50" />
+                                                        ))}
+                                                    </div>
+                                                </>
+                                            )}
+                                            {discount > 0 && <Badge variant="destructive" className="absolute top-4 right-4 text-base px-3 py-1 z-10">{discount}% OFF</Badge>}
+                                        </Carousel>
+                                    ) : (
+                                        <div className="w-full h-full bg-secondary flex items-center justify-center md:rounded-l-lg">
+                                            <span className="text-muted-foreground">No Image</span>
                                         </div>
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <h4 className="font-semibold text-lg">Rate this product</h4>
-                                        <div className="flex items-center gap-1" onMouseLeave={() => setHoveredRating(0)}>
-                                            {Array.from({ length: 5 }).map((_, i) => (
-                                                <Star
-                                                    key={i}
-                                                    className={cn(
-                                                        "h-8 w-8 cursor-pointer transition-all",
-                                                        (hoveredRating > 0 ? i < hoveredRating : i < Math.round(currentRating))
-                                                            ? "text-accent fill-accent scale-110"
-                                                            : "text-muted-foreground/50 hover:text-accent/50"
-                                                    )}
-                                                    onMouseEnter={() => setHoveredRating(i + 1)}
-                                                    onClick={() => handleRatingSubmit(i + 1)}
-                                                />
-                                            ))}
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
-
-                                <div className="flex flex-col gap-3 pt-6 border-t mt-8">
-                                    {(() => {
-                                        const currentSizeCartItem = cart.find(ci => ci.name === item.name && ci.selectedSize === selectedSize);
-                                        return currentSizeCartItem ? (
-                                            <div className="w-full flex items-center justify-between gap-2 p-1 border-2 border-primary/20 bg-primary/5 rounded-xl">
-                                                <Button variant="ghost" size="icon" className="h-11 w-11 rounded-lg text-primary hover:bg-primary/10" onClick={() => onRemoveFromCart(item.name, selectedSize)}>
-                                                    <Minus className="h-5 w-5" />
-                                                </Button>
-                                                <div className="flex flex-col items-center">
-                                                    <span className="font-bold text-lg text-primary leading-tight">{currentSizeCartItem.quantity}</span>
-                                                    {currentSizeCartItem.selectedSize && <span className="text-[10px] text-primary/70 uppercase">Size: {currentSizeCartItem.selectedSize}</span>}
-                                                </div>
-                                                <Button variant="ghost" size="icon" className="h-11 w-11 rounded-lg text-primary hover:bg-primary/10" onClick={() => onAddToCart(item, selectedSize)}>
-                                                    <Plus className="h-5 w-5" />
-                                                </Button>
-                                            </div>
-                                        ) : (
-                                            <Button size="lg" className="w-full h-12 bg-primary hover:bg-primary/90 text-white rounded-xl shadow-premium font-semibold" onClick={() => onAddToCart(item, selectedSize)}>
-                                                <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart {selectedSize && `(${selectedSize})`}
-                                            </Button>
-                                        );
-                                    })()}
-                                    <Button size="lg" variant="secondary" className="w-full" onClick={onCartClick}>
-                                        View Cart
-                                    </Button>
-                                    <Button size="lg" variant="outline" className="w-full border-green-500 text-green-600 hover:bg-green-500 hover:text-white" onClick={() => setIsOrderFormOpen(true)}>
-                                        <WhatsappIcon className="mr-2 h-5 w-5" /> Order on WhatsApp
-                                    </Button>
-                                    <Button size="lg" variant="outline" className="w-full" asChild>
-                                        <Link href={`tel:${config.contact.phone}`} onClick={(e) => e.stopPropagation()}>
-                                            <Phone className="mr-2 h-5 w-5" /> Call to Order
-                                        </Link>
-                                    </Button>
-                                </div>
-
-                                {suggestedItems.length > 0 && (
-                                    <div className="space-y-4 pt-8 mt-8 border-t">
-                                        <h4 className="font-semibold text-lg">You might also like</h4>
-                                        <div className="grid grid-cols-2 gap-4">
-                                            {suggestedItems.map(suggestedItem => {
-                                                const suggestedImageData = PlaceHolderImages.find(img => img.id === suggestedItem.name);
-                                                return (
-                                                    <button key={suggestedItem.name} onClick={() => onSelectItem(suggestedItem)} className="text-left w-full rounded-lg border bg-card text-card-foreground shadow-sm hover:bg-secondary transition-colors overflow-hidden">
-                                                        <div className="relative aspect-square w-full">
-                                                            {suggestedImageData ? (
-                                                                <Image src={suggestedImageData.imageUrl} alt={suggestedItem.name} fill sizes="150px" className="object-cover" loading="lazy" quality={75} />
-                                                            ) : (
-                                                                <div className="w-full h-full bg-muted rounded-t-lg" />
-                                                            )}
-                                                        </div>
-                                                        <div className="p-3">
-                                                            <p className="font-semibold text-sm truncate">{suggestedItem.name}</p>
-                                                            <p className="text-xs text-muted-foreground">Rs. {suggestedItem.price}</p>
-                                                        </div>
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                )}
                             </div>
-                        </ScrollArea>
+
+                            {/* Details Section */}
+                            <div className="w-full md:w-1/2 bg-background md:rounded-r-lg flex flex-col flex-grow min-h-0 pb-32 md:pb-0 mt-[-20px] md:mt-0 rounded-t-[30px] md:rounded-t-none relative z-10 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
+                                <div className="p-6 md:p-8 pt-10 md:pt-8">
+                                    <div className="space-y-6">
+                                        <div className="flex flex-col space-y-1.5 sm:text-left text-left mb-6">
+                                            <h2 className="text-3xl md:text-4xl font-heading font-bold tracking-tight text-[#3A2A1F]">{item.name}</h2>
+                                            <p className="text-base font-body text-[#3A2A1F]/80 pt-3 leading-relaxed">
+                                                {item.description}
+                                            </p>
+                                        </div>
+
+                                        <div className="flex items-baseline gap-3 mb-8">
+                                            <span className="font-bold text-4xl text-[#3A2A1F]">Rs. {item.price}</span>
+                                            {item.originalPrice && <del className="text-xl text-[#3A2A1F]/40 decoration-[#3A2A1F]/30">Rs. {item.originalPrice}</del>}
+                                        </div>
+
+                                        {item.sizes && item.sizes.length > 0 && (
+                                            <div className="mb-8 space-y-3">
+                                                <div className="flex justify-between items-center">
+                                                    <h4 className="font-semibold text-sm uppercase tracking-wider text-[#3A2A1F]/70">Available Sizes</h4>
+                                                    <span className="text-xs text-[#3A2A1F]/90 font-medium">Size Guide</span>
+                                                </div>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {item.sizes.map(size => (
+                                                        <Button
+                                                            key={size}
+                                                            variant={selectedSize === size ? "default" : "outline"}
+                                                            size="sm"
+                                                            className={cn(
+                                                                "min-w-[44px] min-h-[44px] rounded-lg transition-all",
+                                                                selectedSize === size ? "bg-[#3A2A1F] text-[#F6F2EB] shadow-premium scale-105" : "hover:border-[#3A2A1F] hover:text-[#3A2A1F] bg-[#F8F5F0] border-[#C8A165]/20 text-[#3A2A1F]/80"
+                                                            )}
+                                                            onClick={() => setSelectedSize(size)}
+                                                        >
+                                                            {size}
+                                                        </Button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        <Separator />
+
+                                        <div className="my-6 space-y-6">
+                                            <div className="space-y-2">
+                                                <h4 className="font-semibold text-lg text-[#3A2A1F]">Ratings</h4>
+                                                <div className="flex items-center gap-2">
+                                                    <div className="flex items-center">
+                                                        {Array.from({ length: 5 }).map((_, i) => (
+                                                            <Star key={i} className={cn("h-5 w-5", i < Math.round(currentRating) ? "text-[#C8A165] fill-[#C8A165]" : "text-[#3A2A1F]/20")} />
+                                                        ))}
+                                                    </div>
+                                                    <span className="text-sm text-[#3A2A1F]/60">
+                                                        {currentRating.toFixed(1)} ({ratingsCount} ratings)
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <h4 className="font-semibold text-lg text-[#3A2A1F]">Rate this product</h4>
+                                                <div className="flex items-center gap-1" onMouseLeave={() => setHoveredRating(0)}>
+                                                    {Array.from({ length: 5 }).map((_, i) => (
+                                                        <Star
+                                                            key={i}
+                                                            className={cn(
+                                                                "h-8 w-8 cursor-pointer transition-all",
+                                                                (hoveredRating > 0 ? i < hoveredRating : i < Math.round(currentRating))
+                                                                    ? "text-[#C8A165] fill-[#C8A165] scale-110"
+                                                                    : "text-[#3A2A1F]/20 hover:text-[#C8A165]/50"
+                                                            )}
+                                                            onMouseEnter={() => setHoveredRating(i + 1)}
+                                                            onClick={() => handleRatingSubmit(i + 1)}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="hidden md:flex flex-col gap-3 pt-6 border-t mt-8">
+                                            {(() => {
+                                                const currentSizeCartItem = cart.find(ci => ci.name === item.name && ci.selectedSize === selectedSize);
+                                                return currentSizeCartItem ? (
+                                                    <div className="w-full flex items-center justify-between gap-2 p-1 border-2 border-primary/20 bg-primary/5 rounded-xl">
+                                                        <Button variant="ghost" size="icon" className="h-11 w-11 rounded-lg text-primary hover:bg-primary/10" onClick={() => onRemoveFromCart(item.name, selectedSize)}>
+                                                            <Minus className="h-5 w-5" />
+                                                        </Button>
+                                                        <div className="flex flex-col items-center">
+                                                            <span className="font-bold text-lg text-primary leading-tight">{currentSizeCartItem.quantity}</span>
+                                                            {currentSizeCartItem.selectedSize && <span className="text-[10px] text-primary/70 uppercase">Size: {currentSizeCartItem.selectedSize}</span>}
+                                                        </div>
+                                                        <Button variant="ghost" size="icon" className="h-11 w-11 rounded-lg text-primary hover:bg-primary/10" onClick={() => onAddToCart(item, selectedSize)}>
+                                                            <Plus className="h-5 w-5" />
+                                                        </Button>
+                                                    </div>
+                                                ) : (
+                                                    <Button size="lg" className="w-full h-12 bg-primary hover:bg-primary/90 text-white rounded-xl shadow-premium font-semibold" onClick={() => onAddToCart(item, selectedSize)}>
+                                                        <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart {selectedSize && `(${selectedSize})`}
+                                                    </Button>
+                                                );
+                                            })()}
+                                            <Button size="lg" variant="secondary" className="w-full" onClick={onCartClick}>
+                                                View Cart
+                                            </Button>
+                                            <Button size="lg" variant="outline" className="w-full border-green-500 text-green-600 hover:bg-green-500 hover:text-white" onClick={() => setIsOrderFormOpen(true)}>
+                                                <WhatsappIcon className="mr-2 h-5 w-5" /> Order on WhatsApp
+                                            </Button>
+                                            <Button size="lg" variant="outline" className="w-full" asChild>
+                                                <Link href={`tel:${config.contact.phone}`} onClick={(e) => e.stopPropagation()}>
+                                                    <Phone className="mr-2 h-5 w-5" /> Call to Order
+                                                </Link>
+                                            </Button>
+                                        </div>
+
+                                        {suggestedItems.length > 0 && (
+                                            <div className="space-y-4 pt-8 mt-8 border-t">
+                                                <h4 className="font-semibold text-lg text-[#3A2A1F]">You might also like</h4>
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    {suggestedItems.map(suggestedItem => {
+                                                        const suggestedImageData = PlaceHolderImages.find(img => img.id === suggestedItem.name);
+                                                        return (
+                                                            <button key={suggestedItem.name} onClick={() => onSelectItem(suggestedItem)} className="text-left w-full rounded-lg border bg-card text-card-foreground shadow-sm hover:bg-secondary transition-colors overflow-hidden">
+                                                                <div className="relative aspect-square w-full">
+                                                                    {suggestedItem.images && suggestedItem.images.length > 0 ? (
+                                                                        <Image src={suggestedItem.images[0]} alt={suggestedItem.name} fill sizes="150px" className="object-cover" loading="lazy" quality={75} />
+                                                                    ) : (
+                                                                        <div className="w-full h-full bg-muted rounded-t-lg" />
+                                                                    )}
+                                                                </div>
+                                                                <div className="p-3">
+                                                                    <p className="font-semibold text-sm truncate">{suggestedItem.name}</p>
+                                                                    <p className="text-xs text-muted-foreground">Rs. {suggestedItem.price}</p>
+                                                                </div>
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ScrollArea>
+
+                    {/* Mobile Sticky CTA */}
+                    <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/80 backdrop-blur-lg border-t md:hidden z-50">
+                        {(() => {
+                            const currentSizeCartItem = cart.find(ci => ci.name === item.name && ci.selectedSize === selectedSize);
+                            return currentSizeCartItem ? (
+                                <div className="flex items-center gap-3">
+                                    <div className="flex-grow flex items-center justify-between gap-2 p-1 border-2 border-primary/20 bg-primary/5 rounded-xl h-14">
+                                        <Button variant="ghost" size="icon" className="h-12 w-12 rounded-lg text-primary" onClick={() => onRemoveFromCart(item.name, selectedSize)}>
+                                            <Minus className="h-6 w-6" />
+                                        </Button>
+                                        <span className="font-bold text-xl text-primary">{currentSizeCartItem.quantity}</span>
+                                        <Button variant="ghost" size="icon" className="h-12 w-12 rounded-lg text-primary" onClick={() => onAddToCart(item, selectedSize)}>
+                                            <Plus className="h-6 w-6" />
+                                        </Button>
+                                    </div>
+                                    <Button size="lg" className="h-14 px-6 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-xl shadow-lg border-none" onClick={() => setIsOrderFormOpen(true)}>
+                                        <Phone className="h-5 w-5" />
+                                    </Button>
+                                </div>
+                            ) : (
+                                <div className="flex items-center gap-2">
+                                    <Button size="lg" className="flex-grow h-14 bg-primary hover:bg-primary/90 text-white rounded-xl shadow-premium font-bold text-lg" onClick={() => onAddToCart(item, selectedSize)}>
+                                        <ShoppingCart className="mr-2 h-6 w-6" /> Add for ₹{item.price}
+                                    </Button>
+                                    <Button size="lg" className="h-14 px-4 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-xl shadow-lg border-none" onClick={() => setIsOrderFormOpen(true)}>
+                                        <Phone className="h-6 w-6" />
+                                    </Button>
+                                </div>
+                            );
+                        })()}
                     </div>
                 </DialogContent>
             </Dialog>

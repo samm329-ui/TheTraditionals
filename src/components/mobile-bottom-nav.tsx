@@ -16,7 +16,7 @@ type MobileBottomNavProps = {
 
 const navItems = [
   { href: '/', icon: Home, label: 'Home' },
-  { href: 'menu', icon: List, label: 'Catalog' },
+  { href: 'menu', icon: List, label: 'Collections' },
   { href: '/cart', icon: ShoppingCart, label: 'Cart' },
   { href: 'ai', icon: Sparkles, label: 'AI' },
   { href: config.contact.location, icon: GoogleMapsIcon, label: 'Location' },
@@ -34,11 +34,6 @@ export function MobileBottomNav({ cartCount, onCartClick, onMenuClick, onAIClick
             <>
               <div className="relative p-1 rounded-full group-hover:bg-primary/5 transition-colors duration-300 mb-1">
                 <item.icon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" strokeWidth={1.5} />
-                {item.href === 'cart' && cartCount > 0 && (
-                  <Badge className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center rounded-full p-0 text-[10px] bg-primary text-white border border-[#fcf7f3]">
-                    {cartCount}
-                  </Badge>
-                )}
                 {item.href === 'ai' && (
                   <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-primary rounded-full animate-pulse" />
                 )}
@@ -48,6 +43,26 @@ export function MobileBottomNav({ cartCount, onCartClick, onMenuClick, onAIClick
           );
 
 
+
+          if (item.label === 'Cart') {
+            return (
+              <button
+                key={item.label}
+                onClick={onCartClick}
+                className={buttonBaseClass}
+              >
+                <div className="relative p-1 rounded-full group-hover:bg-primary/5 transition-colors duration-300 mb-1">
+                  <item.icon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" strokeWidth={1.5} />
+                  {cartCount > 0 && (
+                    <Badge className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center rounded-full p-0 text-[10px] bg-primary text-white border border-[#fcf7f3]">
+                      {cartCount}
+                    </Badge>
+                  )}
+                </div>
+                <span className="text-[10px] font-medium tracking-wide uppercase">{item.label}</span>
+              </button>
+            );
+          }
 
           if (item.href === 'menu') {
             return (
@@ -95,7 +110,10 @@ export function MobileBottomNav({ cartCount, onCartClick, onMenuClick, onAIClick
               href={item.href}
               className={buttonBaseClass}
             >
-              {content}
+              <div className="relative p-1 rounded-full group-hover:bg-primary/5 transition-colors duration-300 mb-1">
+                <item.icon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" strokeWidth={1.5} />
+              </div>
+              <span className="text-[10px] font-medium tracking-wide uppercase">{item.label}</span>
             </Link>
           );
         })}

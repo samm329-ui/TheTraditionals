@@ -47,7 +47,7 @@ const MenuSection = () => {
             </div>
 
             <div className="w-full relative group/carousel max-w-[95vw] mx-auto">
-                <div className="overflow-hidden px-4 md:px-12" ref={emblaRef}>
+                <div className="hidden md:block overflow-hidden px-4 md:px-12" ref={emblaRef}>
                     <div className="flex -ml-6 py-8">
                         {collections.map((collection, index) => {
                             // Fallback to placeholder logic if needed, or mapping strictly to known IDs
@@ -94,6 +94,46 @@ const MenuSection = () => {
                                         </div>
                                     </Link>
                                 </div>
+                            )
+                        })}
+                    </div>
+                </div>
+
+                {/* Mobile Collage View */}
+                <div className="md:hidden px-4">
+                    <div className="grid grid-cols-2 gap-3">
+                        {collections.map((collection, index) => {
+                            const imageData = PlaceHolderImages.find(img => img.id === collection.image) || PlaceHolderImages[0];
+                            // Featured item (first one) spans full width for collage effect
+                            const isFeatured = index === 0;
+
+                            return (
+                                <Link
+                                    key={`mobile-${collection.id}`}
+                                    href="#products"
+                                    className={cn(
+                                        "relative rounded-xl overflow-hidden shadow-sm block group",
+                                        isFeatured ? "col-span-2 aspect-[16/9]" : "aspect-[3/4]"
+                                    )}
+                                >
+                                    {imageData && (
+                                        <Image
+                                            src={imageData.imageUrl}
+                                            alt={collection.name}
+                                            fill
+                                            className="object-cover transition-transform duration-500 group-active:scale-105"
+                                        />
+                                    )}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90" />
+                                    <div className="absolute bottom-0 left-0 w-full p-3">
+                                        <h3 className={cn(
+                                            "font-heading font-bold text-white leading-tight",
+                                            isFeatured ? "text-xl" : "text-sm"
+                                        )}>
+                                            {collection.name}
+                                        </h3>
+                                    </div>
+                                </Link>
                             )
                         })}
                     </div>

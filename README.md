@@ -1,36 +1,32 @@
-# Atithi - Premium Restaurant Website
+# The Traditional Needle Work — Premium Traditional Clothing
 
-This is a Next.js project for the Atithi Family Restaurant, built and prototyped in Firebase Studio.
-
-## Overview
-
-The application serves as a premium, modern website for a high-end restaurant targeting families, professionals, and highway travelers. It features a sleek, dark-themed UI, animated hero sections, and AI-powered restaurant recommendations.
+A premium e-commerce website for **The Traditional Needle Work**, featuring handcrafted embroidered Punjabis, designer blouses, traditional sarees, and custom stitching services. Built with authentic Bengali craftsmanship and modern web technologies.
 
 ## Tech Stack
 
-- **Framework**: Next.js (App Router)
+- **Framework**: Next.js 14 (App Router)
 - **UI**: React, Tailwind CSS, ShadCN UI
-- **Styling**: `globals.css` with CSS variables for theming.
-- **Generative AI**: Google's Gemini model via Genkit.
-- **Fonts**: Google Fonts (Poppins)
+- **Styling**: CSS variables for theming with a heritage luxury palette
+- **AI Features**: Google Gemini via Genkit (AI Stylist)
+- **Fonts**: Google Fonts (Inter, Playfair Display)
+- **Media Hosting**: Supabase Storage
+- **Analytics**: Google Analytics
 
 ## Getting Started
 
-To run the development server:
-
 ```bash
+npm install
 npm run dev
 ```
 
-Open [http://localhost:9002](http://localhost:9002) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
-- `src/app/`: Main application source, including pages and layouts.
-- `src/components/`: Reusable React components.
-  - `sections/`: Components for each major section of the landing page.
-  - `ui/`: Core UI elements from ShadCN.
-- `src/ai/`: Contains Genkit flows for AI-powered features.
-- `src/lib/`: Utility functions and static data.
-- `public/`: Static assets.
-- `CHANGELOG.md`: A log of all programmatic changes made to the application.
+- `src/app/` — Pages and layouts (App Router)
+- `src/components/` — Reusable React components
+  - `sections/` — Landing page sections (Hero, Products, Reviews, etc.)
+  - `ui/` — ShadCN UI primitives
+- `src/ai/` — Genkit flows for AI-powered features
+- `src/lib/` — Utilities, config, and product data
+- `public/` — Static assets, icons, and manifest

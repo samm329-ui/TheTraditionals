@@ -1,17 +1,17 @@
 {
-    "name": "Atithi Family Restaurant",
-    "short_name": "Atithi",
-    "description": "Premium highway restaurant offering authentic Indian cuisine. Order food online, view menu, and get AI-powered dish recommendations.",
+    "name": "The Traditional Needle Work",
+    "short_name": "Traditional Needle Work",
+    "description": "Premium traditional clothing brand featuring handcrafted embroidered Punjabis, designer blouses, and custom stitching services. Authentic Bengali craftsmanship with modern elegance.",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#faf8f5",
-    "theme_color": "#a97736",
+    "theme_color": "#D4A574",
     "orientation": "portrait-primary",
     "scope": "/",
     "lang": "en",
     "categories": [
-        "food",
-        "restaurant",
+        "shopping",
+        "fashion",
         "lifestyle"
     ],
     "icons": [
@@ -82,10 +82,10 @@
     ],
     "shortcuts": [
         {
-            "name": "View Menu",
-            "short_name": "Menu",
-            "description": "Browse our complete menu",
-            "url": "/#menu",
+            "name": "View Collections",
+            "short_name": "Collections",
+            "description": "Browse our curated collections",
+            "url": "/#products",
             "icons": [
                 {
                     "src": "/icons/menu-icon.png",

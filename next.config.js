@@ -62,6 +62,18 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'ui-avatars.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.transparenttextures.com',
+        port: '',
+        pathname: '/**',
+      }
     ],
   },
   // Add headers for caching static assets

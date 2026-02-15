@@ -6,7 +6,7 @@ import './globals.css';
 import { config, cn } from '@/lib/utils';
 import { Inter, Playfair_Display } from 'next/font/google';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.thetraditionalneedlework.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.thetraditionalneedlework.in';
 
 const inter = Inter({
   subsets: ['latin'],
