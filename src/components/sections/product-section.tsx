@@ -11,6 +11,7 @@ import {
     CarouselItem,
     type CarouselApi,
 } from "@/components/ui/carousel";
+import { styleTips } from '@/lib/style-tips';
 import {
     Dialog,
     DialogContent,
@@ -54,7 +55,7 @@ const PremiumProductCard = ({ item, cart, onAddToCart, onRemoveFromCart, onCardC
 
     return (
         <div className="flex flex-col w-full h-full overflow-hidden bg-[#F6F2EB] rounded-2xl shadow-premium border border-[#C8A165]/40 p-4" onClick={() => onCardClick(item)}>
-            <div className="relative w-full aspect-[4/5] overflow-hidden rounded-xl bg-white mb-4">
+            <div className="relative w-full aspect-[4/5] overflow-hidden rounded-xl bg-white mb-4 frame-container">
                 {mainImage ? (
                     <Image
                         src={mainImage}
@@ -291,7 +292,7 @@ const DesktopProductCard = ({ item, cart, onCardClick, onAddToCart, onRemoveFrom
             onClick={() => onCardClick(item)}
         >
             <div className="w-full h-full bg-card rounded-2xl border border-primary/10 flex flex-col group shadow-lg hover:shadow-[0_20px_50px_rgba(200,161,101,0.15)] transition-all duration-500 overflow-hidden relative">
-                <div className="relative w-full aspect-[3/4] overflow-hidden bg-white">
+                <div className="relative w-full aspect-[3/4] overflow-hidden bg-white frame-container">
                     {mainImage ? (
                         <Image
                             src={mainImage}
@@ -595,7 +596,7 @@ const MobileProductCard = ({ item, cart, onAddToCart, onRemoveFromCart, onCardCl
     return (
         <div className="flex flex-col w-full h-full overflow-hidden bg-white rounded-xl shadow-lg border border-[#C8A165]/30 p-3" onClick={() => onCardClick(item)}>
             {/* Image Container - Improved Aspect Ratio */}
-            <div className="relative w-full aspect-[3/4] flex-shrink-0">
+            <div className="relative w-full aspect-[3/4] flex-shrink-0 frame-container">
                 {mainImage ? (
                     <Image
                         src={mainImage}
@@ -705,6 +706,8 @@ const ProductCategory = ({
         let newSortedProducts = [...category.products];
         if (value === 'low-to-high') {
             newSortedProducts.sort((a, b) => a.price - b.price);
+        } else if (value === 'high-to-low') {
+            newSortedProducts.sort((a, b) => b.price - a.price);
         } else if (value === 'rating') {
             newSortedProducts.sort((a, b) => b.rating - a.rating);
         } else if (value === 'offers') {
@@ -721,18 +724,70 @@ const ProductCategory = ({
 
     return (
         <div>
-            <div className="flex flex-col md:flex-row justify-end md:items-center mb-6">
-                <div className='flex items-center gap-4'>
+            <div className="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-4 px-4 md:px-0">
+                <div className="flex items-center gap-3 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="rounded-full border-[#C8A165]/40 text-[#3A2A1F] hover:bg-[#F6F2EB] md:hidden flex-shrink-0"
+                        onClick={() => {
+                            const randomTip = styleTips[Math.floor(Math.random() * styleTips.length)];
+                            alert(`✨ Style Tip:\n\n${randomTip}`);
+                        }}
+                    >
+                        <Sparkles className="h-4 w-4 mr-2 text-[#C8A165]" />
+                        Style Tip
+                    </Button>
+                    <div className="h-4 w-px bg-border md:hidden" />
+                    <span className="text-sm font-medium text-[#3A2A1F]/60 whitespace-nowrap">Filters:</span>
+                    <Button
+                        variant={selectedSort === 'low-to-high' ? 'default' : 'outline'}
+                        size="sm"
+                        className="rounded-full h-9"
+                        onClick={() => handleSortChange('low-to-high')}
+                    >
+                        Price: Low to High
+                    </Button>
+                    <Button
+                        variant={selectedSort === 'high-to-low' ? 'default' : 'outline'}
+                        size="sm"
+                        className="rounded-full h-9"
+                        onClick={() => handleSortChange('high-to-low')}
+                    >
+                        Price: High to Low
+                    </Button>
+                    <Button
+                        variant={selectedSort === 'rating' ? 'default' : 'outline'}
+                        size="sm"
+                        className="rounded-full h-9"
+                        onClick={() => handleSortChange('rating')}
+                    >
+                        Most Rated
+                    </Button>
+                    {selectedSort !== 'default' && (
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-primary hover:text-primary/80"
+                            onClick={() => handleSortChange('default')}
+                        >
+                            Reset
+                        </Button>
+                    )}
+                </div>
+
+                <div className='hidden md:flex items-center gap-4'>
                     <Select onValueChange={handleSortChange} value={selectedSort}>
-                        <SelectTrigger className="w-[180px]">
-                            <Filter className="h-4 w-4 mr-2" />
-                            <SelectValue placeholder="Sort by" />
+                        <SelectTrigger className="w-[180px] rounded-full border-[#C8A165]/30">
+                            <Filter className="h-4 w-4 mr-2 text-[#C8A165]" />
+                            <SelectValue placeholder="Quick Sort" />
                         </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="default">Default</SelectItem>
-                            <SelectItem value="low-to-high">Price: Low to High</SelectItem>
-                            <SelectItem value="rating">Rating: High to Low</SelectItem>
-                            <SelectItem value="offers">Only Offers</SelectItem>
+                        <SelectContent className="rounded-xl border-[#C8A165]/20 shadow-xl">
+                            <SelectItem value="default" className="rounded-lg">Recommended</SelectItem>
+                            <SelectItem value="low-to-high" className="rounded-lg">Price: Low to High</SelectItem>
+                            <SelectItem value="high-to-low" className="rounded-lg">Price: High to Low</SelectItem>
+                            <SelectItem value="rating" className="rounded-lg">Most Rated</SelectItem>
+                            <SelectItem value="offers" className="rounded-lg">Exclusive Offers</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>

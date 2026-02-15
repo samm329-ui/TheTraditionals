@@ -369,21 +369,21 @@ export const ProductDetailDialog = ({
             {/* Full Screen Image Viewer */}
             <Dialog open={isFullScreen} onOpenChange={setIsFullScreen}>
                 <DialogContent
-                    className="p-0 border-none bg-black/98 fixed inset-0 w-screen h-[100dvh] flex flex-col items-center justify-center z-[150] shadow-none gap-0 translate-x-0 translate-y-0 left-0 top-0 max-w-none rounded-none"
+                    className="p-0 border-none bg-black fixed inset-0 w-screen h-screen flex items-center justify-center z-[200] shadow-none outline-none translate-x-0 translate-y-0 left-0 top-0 max-w-none rounded-none overflow-hidden"
                     onPointerDownOutside={(e) => e.preventDefault()}
                 >
-                    <div className="absolute top-safe-4 right-4 z-[160] md:top-8 md:right-8">
+                    <div className="absolute top-6 right-6 z-[210] md:top-8 md:right-8">
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="text-white hover:bg-white/10 rounded-full h-12 w-12 bg-black/20 backdrop-blur-sm"
+                            className="text-white hover:bg-white/10 rounded-full h-12 w-12 bg-black/40 backdrop-blur-md border border-white/10"
                             onClick={() => setIsFullScreen(false)}
                         >
                             <CloseIcon className="h-8 w-8" />
                         </Button>
                     </div>
 
-                    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+                    <div className="w-full h-full relative flex items-center justify-center bg-black">
                         {item.images && item.images.length > 0 && (
                             <Carousel
                                 className="w-full h-full"
@@ -401,6 +401,7 @@ export const ProductDetailDialog = ({
                                                     quality={100}
                                                     priority
                                                     loading="eager"
+                                                    unoptimized
                                                 />
                                             </div>
                                         </CarouselItem>
@@ -408,26 +409,26 @@ export const ProductDetailDialog = ({
                                 </CarouselContent>
                                 {item.images.length > 1 && (
                                     <>
-                                        <CarouselPrevious className="left-4 md:left-8 text-white hover:text-white/80 bg-black/20 hover:bg-black/40 border-none h-14 w-14" />
-                                        <CarouselNext className="right-4 md:right-8 text-white hover:text-white/80 bg-black/20 hover:bg-black/40 border-none h-14 w-14" />
+                                        <CarouselPrevious className="left-6 md:left-12 text-white hover:text-white/80 bg-black/40 hover:bg-black/60 border-none h-14 w-14 lg:h-16 lg:w-16 z-50 pointer-events-auto" />
+                                        <CarouselNext className="right-6 md:right-12 text-white hover:text-white/80 bg-black/40 hover:bg-black/60 border-none h-14 w-14 lg:h-16 lg:w-16 z-50 pointer-events-auto" />
                                     </>
                                 )}
                             </Carousel>
                         )}
                     </div>
 
-                    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[160] text-center w-full px-4">
-                        <p className="text-white font-heading font-medium text-xl md:text-2xl drop-shadow-lg tracking-wide">
+                    <div className="absolute bottom-8 left-0 right-0 z-[210] text-center px-4 pointer-events-none">
+                        <p className="text-white font-heading font-medium text-xl md:text-3xl drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] tracking-wide">
                             {item.name}
                         </p>
                         {item.images && item.images.length > 1 && (
-                            <div className="flex justify-center gap-1.5 mt-4">
+                            <div className="flex justify-center gap-2 mt-6">
                                 {item.images.map((_, i) => (
                                     <div
                                         key={i}
                                         className={cn(
-                                            "h-1 rounded-full transition-all duration-300",
-                                            i === fullScreenImageIndex ? "w-8 bg-[#C8A165]" : "w-2 bg-white/30"
+                                            "h-1.5 rounded-full transition-all duration-300",
+                                            i === fullScreenImageIndex ? "w-10 bg-[#C8A165]" : "w-2.5 bg-white/40"
                                         )}
                                     />
                                 ))}

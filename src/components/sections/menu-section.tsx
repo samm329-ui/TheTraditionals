@@ -63,7 +63,7 @@ const MenuSection = () => {
                                         className="block group cursor-pointer relative"
                                     >
                                         <div className={cn(
-                                            "relative w-full aspect-[3/4] rounded-2xl overflow-hidden",
+                                            "relative w-full aspect-[3/4] rounded-2xl overflow-hidden frame-container",
                                             "shadow-md transition-all duration-500 ease-out",
                                             "group-hover:shadow-xl group-hover:shadow-primary/10",
                                             "border border-transparent group-hover:border-primary/30"
@@ -112,7 +112,7 @@ const MenuSection = () => {
                                     key={`mobile-${collection.id}`}
                                     href="#products"
                                     className={cn(
-                                        "relative rounded-xl overflow-hidden shadow-sm block group",
+                                        "relative rounded-xl overflow-hidden shadow-sm block group frame-container",
                                         isFeatured ? "col-span-2 aspect-[16/9]" : "aspect-[3/4]"
                                     )}
                                 >

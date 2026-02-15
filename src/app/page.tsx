@@ -320,11 +320,41 @@ export default function Home() {
           <div className="hidden md:block">
             <ReviewsSection />
           </div>
+
+          {/* Desktop Banner 5: Between Reviews and Custom Design? No, user said between Custom Design and Reviews. I'll swap them. */}
           <CustomDesignSection />
+
+          <div className="hidden md:block my-16">
+            <div className="relative aspect-[21/9] w-full container mx-auto">
+              <Image
+                src="https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/Banner/banner%205.webp"
+                alt="Banner"
+                fill
+                className="object-cover rounded-2xl"
+                sizes="100vw"
+                quality={85}
+              />
+            </div>
+          </div>
+
           <div className="hidden md:block">
             <WriteReviewSection onReviewSubmit={handleReviewSubmit} />
           </div>
+
           <ContactSection />
+
+          <div className="md:hidden mt-8">
+            <div className="relative aspect-[21/9] w-full">
+              <Image
+                src="https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/Banner/banner%205.webp"
+                alt="Banner"
+                fill
+                className="object-cover"
+                sizes="100vw"
+                quality={75}
+              />
+            </div>
+          </div>
           <div className="hidden md:block">
             <RecommendationSection />
           </div>

@@ -16,7 +16,7 @@ type MobileBottomNavProps = {
 
 const navItems = [
   { href: '/', icon: Home, label: 'Home' },
-  { href: '/about', icon: Info, label: 'About' },
+  { href: '/about', icon: Info, label: 'About Us' },
   { href: '/cart', icon: ShoppingCart, label: 'Cart' },
   { href: 'ai', icon: Sparkles, label: 'AI' },
   { href: config.contact.location, icon: GoogleMapsIcon, label: 'Location' },
