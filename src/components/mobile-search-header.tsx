@@ -5,6 +5,7 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, X } from "lucide-react";
+import Fuse from "fuse.js";
 import { type Product, type Category } from "@/lib/products";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -19,31 +20,45 @@ type MobileSearchHeaderProps = {
 const MobileSearchHeader = ({ onSearch, searchQuery, allMenuItems, onProductSelect }: MobileSearchHeaderProps) => {
     const flatMenuItems = React.useMemo(() => allMenuItems.flatMap(c => c.products), [allMenuItems]);
 
+    const fuse = React.useMemo(() => {
+        return new Fuse(flatMenuItems, {
+            keys: [
+                { name: 'name', weight: 0.7 },
+                { name: 'description', weight: 0.3 }
+            ],
+            threshold: 0.4,
+            distance: 100,
+            ignoreLocation: true,
+            minMatchCharLength: 2,
+        });
+    }, [flatMenuItems]);
+
     const searchResults = React.useMemo(() => {
         if (!searchQuery) return [];
-        const lowerCaseQuery = searchQuery.toLowerCase();
+        const lowerCaseQuery = searchQuery.toLowerCase().trim();
 
-        let categoryResults: Product[] = [];
-        if (lowerCaseQuery.includes('men')) {
-            const menCategory = allMenuItems.find(cat => cat.name.toLowerCase().includes('men'));
-            if (menCategory) categoryResults.push(...menCategory.products);
-        } else {
-            const matchedCategory = allMenuItems.find(cat => cat.name.toLowerCase().includes(lowerCaseQuery));
-            if (matchedCategory) {
-                categoryResults = matchedCategory.products;
-            }
-        }
-
-        const itemResults = flatMenuItems.filter(item =>
-            item.name.toLowerCase().includes(lowerCaseQuery) ||
-            item.description.toLowerCase().includes(lowerCaseQuery)
+        // 1. Look for category matches first to boost those products
+        let categoryBoostResults: Product[] = [];
+        const matchedCategory = allMenuItems.find(cat =>
+            cat.name.toLowerCase().includes(lowerCaseQuery) ||
+            (lowerCaseQuery.length > 3 && cat.name.toLowerCase().startsWith(lowerCaseQuery.substring(0, 3)))
         );
 
-        const combined = [...categoryResults, ...itemResults];
+        if (matchedCategory) {
+            categoryBoostResults = matchedCategory.products;
+        }
+
+        // 2. Use Fuse.js for fuzzy product matching
+        const fuseResults = fuse.search(searchQuery).map(result => result.item);
+
+        // 3. Combine results, prioritizing category matches
+        const combined = [...categoryBoostResults, ...fuseResults];
+
+        // Remove duplicates while preserving order
         const uniqueResults = Array.from(new Map(combined.map(item => [item.name, item])).values());
 
         return uniqueResults;
-    }, [searchQuery, allMenuItems, flatMenuItems]);
+    }, [searchQuery, allMenuItems, fuse]);
 
     const handleResultClick = (item: Product) => {
         onProductSelect(item);

@@ -1,10 +1,12 @@
 
+import * as React from 'react';
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { Toaster } from "@/components/ui/toaster"
 import './globals.css';
 import { config, cn } from '@/lib/utils';
 import { Inter, Playfair_Display } from 'next/font/google';
+import PageTransition from '@/components/page-transition';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.thetraditionalneedlework.in';
 
@@ -216,7 +218,11 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased overflow-x-hidden">
-        {children}
+        <React.Suspense fallback={null}>
+          <PageTransition>
+            {children}
+          </PageTransition>
+        </React.Suspense>
         <Toaster />
         {/* Google Analytics */}
         <Script

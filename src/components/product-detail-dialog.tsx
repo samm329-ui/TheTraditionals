@@ -14,7 +14,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Button } from '@/components/ui/button';
-import { Phone, Star, ShoppingCart, Plus, Minus, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Phone, Star, ShoppingCart, Plus, Minus, ChevronLeft, ChevronRight, Maximize2, X as CloseIcon } from 'lucide-react';
 import { cn, config } from '@/lib/utils';
 import {
     Carousel,
@@ -61,6 +61,8 @@ export const ProductDetailDialog = ({
     const [selectedSize, setSelectedSize] = React.useState<string | undefined>(
         item.sizes && item.sizes.length > 0 ? item.sizes[0] : undefined
     );
+    const [isFullScreen, setIsFullScreen] = React.useState(false);
+    const [fullScreenImageIndex, setFullScreenImageIndex] = React.useState(0);
     const { toast } = useToast();
 
     const imageData = PlaceHolderImages.find(img => img.id === item.name);
@@ -124,7 +126,13 @@ export const ProductDetailDialog = ({
                                             <CarouselContent className="h-full ml-0">
                                                 {item.images.map((img, index) => (
                                                     <CarouselItem key={index} className="pl-0 h-full relative">
-                                                        <div className="relative aspect-[3/4] md:h-full w-full">
+                                                        <div
+                                                            className="relative aspect-[3/4] md:h-full w-full cursor-zoom-in"
+                                                            onClick={() => {
+                                                                setFullScreenImageIndex(index);
+                                                                setIsFullScreen(true);
+                                                            }}
+                                                        >
                                                             <Image
                                                                 src={img}
                                                                 alt={`${item.name} - image ${index + 1}`}
@@ -134,6 +142,9 @@ export const ProductDetailDialog = ({
                                                                 quality={85}
                                                                 priority={index === 0}
                                                             />
+                                                            <div className="absolute top-4 right-4 bg-black/20 backdrop-blur-md rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                                <Maximize2 className="h-4 w-4 text-white" />
+                                                            </div>
                                                         </div>
                                                     </CarouselItem>
                                                 ))}
@@ -160,7 +171,7 @@ export const ProductDetailDialog = ({
                             </div>
 
                             {/* Details Section */}
-                            <div className="w-full md:w-1/2 bg-background md:rounded-r-lg flex flex-col flex-grow min-h-0 pb-32 md:pb-0 mt-[-20px] md:mt-0 rounded-t-[30px] md:rounded-t-none relative z-10 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
+                            <div className="w-full md:w-1/2 bg-background md:rounded-r-lg flex flex-col flex-grow min-h-0 pb-32 md:pb-0 mt-4 md:mt-0 relative z-10">
                                 <div className="p-6 md:p-8 pt-10 md:pt-8">
                                     <div className="space-y-6">
                                         <div className="flex flex-col space-y-1.5 sm:text-left text-left mb-6">
@@ -345,6 +356,57 @@ export const ProductDetailDialog = ({
                 onOpenChange={setIsOrderFormOpen}
                 cart={effectiveCart}
             />
+
+            {/* Full Screen Image Viewer */}
+            <Dialog open={isFullScreen} onOpenChange={setIsFullScreen}>
+                <DialogContent className="p-0 border-none bg-black/95 max-w-full w-full h-full flex flex-col items-center justify-center z-[100]">
+                    <div className="absolute top-4 right-4 z-[110]">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-white hover:bg-white/10 rounded-full h-12 w-12"
+                            onClick={() => setIsFullScreen(false)}
+                        >
+                            <CloseIcon className="h-8 w-8" />
+                        </Button>
+                    </div>
+
+                    <div className="relative w-full h-[80vh] flex items-center justify-center">
+                        {item.images && item.images.length > 0 && (
+                            <Carousel
+                                className="w-full h-full max-w-4xl"
+                                opts={{ startIndex: fullScreenImageIndex }}
+                            >
+                                <CarouselContent className="h-full">
+                                    {item.images.map((img, index) => (
+                                        <CarouselItem key={index} className="h-full flex items-center justify-center">
+                                            <div className="relative w-full h-full">
+                                                <Image
+                                                    src={img}
+                                                    alt={`${item.name} - Full image ${index + 1}`}
+                                                    fill
+                                                    className="object-contain"
+                                                    quality={100}
+                                                    priority
+                                                />
+                                            </div>
+                                        </CarouselItem>
+                                    ))}
+                                </CarouselContent>
+                                {item.images.length > 1 && (
+                                    <>
+                                        <CarouselPrevious className="left-4 text-white hover:text-white/80 bg-white/10 hover:bg-white/20 border-white/20 h-12 w-12" />
+                                        <CarouselNext className="right-4 text-white hover:text-white/80 bg-white/10 hover:bg-white/20 border-white/20 h-12 w-12" />
+                                    </>
+                                )}
+                            </Carousel>
+                        )}
+                    </div>
+                    <div className="mt-4 text-white/70 font-medium text-lg">
+                        {item.name}
+                    </div>
+                </DialogContent>
+            </Dialog>
         </React.Fragment>
     );
 };

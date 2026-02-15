@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Home, List, ShoppingCart, Sparkles } from 'lucide-react';
+import { Home, Info, ShoppingCart, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { GoogleMapsIcon } from './icons';
 
@@ -16,7 +16,7 @@ type MobileBottomNavProps = {
 
 const navItems = [
   { href: '/', icon: Home, label: 'Home' },
-  { href: 'menu', icon: List, label: 'Heritage' },
+  { href: '/about', icon: Info, label: 'About' },
   { href: '/cart', icon: ShoppingCart, label: 'Cart' },
   { href: 'ai', icon: Sparkles, label: 'AI' },
   { href: config.contact.location, icon: GoogleMapsIcon, label: 'Location' },
@@ -64,18 +64,7 @@ export function MobileBottomNav({ cartCount, onCartClick, onMenuClick, onAIClick
             );
           }
 
-          if (item.href === 'menu') {
-            return (
-              <button
-                key={item.label}
-                onClick={onMenuClick}
-                className={buttonBaseClass}
-                suppressHydrationWarning={true}
-              >
-                {content}
-              </button>
-            );
-          }
+          // Removed special button handler for 'menu' as it now links to /about directly
 
           if (item.href === 'ai') {
             return (
