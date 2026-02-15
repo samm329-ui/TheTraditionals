@@ -10,15 +10,15 @@ const featuredItems = [
         name: "Blouse Collection",
         description: "Exquisite hand-stitched designer blouses, tailored to perfection for a sophisticated and elegant look.",
         imageUrl: "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Blouse/B3/Whisk_a14fdc3bb0917fd88774a8e3f68fd695dr.webp",
-        cta: "View Blouse Collection",
+        cta: "Explore Our Artistry",
         href: "#products",
         category: "Blouse"
     },
     {
         name: "Festive Panjabi Series",
         description: "A curated selection of premium cotton and silk punjabis featuring detailed embroidery, perfect for festive celebrations.",
-        imageUrl: "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Punjabi/pun%209/Whisk_1bec8aeee84f774be4c40c33fbd9c111dr.png",
-        cta: "Shop Panjabi Collection",
+        imageUrl: "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Punjabi/pun%209/Whisk_1bec8aeee84f774be4c40c33fbd9c111dr.webp",
+        cta: "View Heritage Works",
         href: "#products",
         category: "Panjabi"
     },

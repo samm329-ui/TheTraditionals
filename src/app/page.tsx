@@ -302,7 +302,7 @@ export default function Home() {
             onCartClick={() => router.push('/cart')}
           />
 
-          <div className="md:hidden -mx-4 mt-8">
+          <div className="md:hidden mt-8">
             <div className="relative aspect-[21/9] w-full">
               <Image
                 src="https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/Banner/banner%204.webp"
