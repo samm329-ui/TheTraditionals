@@ -180,6 +180,14 @@ export default function Header({
         <NavigationMenu className="max-w-full items-start justify-start w-full">
           <div className="flex w-full flex-col gap-y-4 px-2">
             <Link href="/" onClick={() => setOpen(false)} className="text-lg font-medium py-2 border-b border-border/40 w-full">Home</Link>
+            <Link href="/cart" onClick={() => setOpen(false)} className="text-lg font-medium py-2 border-b border-border/40 w-full flex justify-between items-center">
+              Cart
+              {cart.length > 0 && (
+                <Badge className="bg-[#C8A165] text-white text-[10px] font-bold h-5 px-1.5">
+                  {cart.reduce((total, item) => total + item.quantity, 0)}
+                </Badge>
+              )}
+            </Link>
             <div className="flex flex-col gap-y-2">
               <span className="text-sm font-serif text-muted-foreground uppercase tracking-wider">Collections</span>
               {productLinks.map((link) => (

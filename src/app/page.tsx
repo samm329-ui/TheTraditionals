@@ -11,8 +11,9 @@ import { productData, type Product, type Category } from '@/lib/products';
 import { config, type Review } from "@/lib/utils";
 const MobileSearchHeader = dynamic(() => import("@/components/mobile-search-header"), { ssr: false });
 const MobileHeroCarousel = dynamic(() => import("@/components/mobile-hero-carousel"));
-const MobileBottomNav = dynamic(() => import("@/components/mobile-bottom-nav").then(mod => mod.MobileBottomNav));
+// const MobileBottomNav = dynamic(() => import("@/components/mobile-bottom-nav").then(mod => mod.MobileBottomNav));
 const MobileAISheet = dynamic(() => import("@/components/mobile-ai-sheet"));
+const MobileBannerCarousel = dynamic(() => import("@/components/mobile-banner-carousel"));
 
 const MenuSection = dynamic(() => import("@/components/sections/menu-section"));
 const FeaturedCollectionSection = dynamic(() => import("@/components/sections/featured-collection-section"));
@@ -241,16 +242,9 @@ export default function Home() {
           </div>
           <div className="md:hidden">
             <div className="mt-[-12px]">
-              <Image
-                src="https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/Banner/banner%203.webp"
-                alt="Special Offer Banner"
-                width={1200}
-                height={400}
-                className="object-cover w-full"
-                priority
-                sizes="100vw"
-                quality={75}
-              />
+              <div className="mt-[-12px]">
+                <MobileBannerCarousel />
+              </div>
             </div>
             <div className="px-4">
               <h1 className="text-2xl font-semibold tracking-[0.2px] text-foreground mt-4">Featured Collection</h1>
@@ -363,12 +357,8 @@ export default function Home() {
         <Footer />
       </div>
 
-      <MobileBottomNav
-        cartCount={totalCartItems}
-        onCartClick={() => router.push('/cart')}
-        onMenuClick={() => setIsMenuDialogOpen(true)}
-        onAIClick={() => setIsAIOpen(true)}
-      />
+      {/* MobileBottomNav removed */}
+
 
       {/* AI Sheet for Mobile */}
       <MobileAISheet
