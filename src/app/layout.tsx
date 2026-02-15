@@ -180,6 +180,9 @@ export const metadata: Metadata = {
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
   },
+  verification: {
+    google: 'mdFYufa5v9Wj3s3T1O9Z-LIGOVXrcjLJdYnAQqKBerQ',
+  },
 
   manifest: '/manifest.json',
 };

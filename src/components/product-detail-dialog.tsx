@@ -301,14 +301,9 @@ export const ProductDetailDialog = ({
                                                 </Button>
                                             );
                                         })()}
-                                        <div className="grid grid-cols-2 gap-3">
-                                            <Button variant="secondary" className="w-full" onClick={onCartClick}>
-                                                View Cart
-                                            </Button>
-                                            <Button variant="outline" className="w-full border-green-500 text-green-600 hover:bg-green-500 hover:text-white" onClick={() => setIsOrderFormOpen(true)}>
-                                                <WhatsappIcon className="mr-2 h-4 w-4" /> WhatsApp
-                                            </Button>
-                                        </div>
+                                        <Button variant="secondary" className="w-full" onClick={onCartClick}>
+                                            View Cart
+                                        </Button>
                                     </div>
 
                                     {suggestedItems.length > 0 && (
