@@ -265,38 +265,13 @@ export async function tryLocalResponse(message: string): Promise<LocalAIResponse
         'niye ay', 'niye aso', 'send', 'pathao', 'niye eso'
     ];
 
+    /* 
+    // Commenting out local ordering to let Gemini handle it with better context
     if (hasKeyword(m, orderingKeywords)) {
-        // [NLP CHECK] Is this a negative intent? (e.g., "Don't order", "Cancel order")
-        const doc = nlp(m);
-        if (doc.has('#Negative') || doc.has('cancel') || doc.has('remove') || doc.has('delete') || doc.has('na')) {
-            // Let Gemini handle complex cancellations for now, or handle specifically
-            return { handled: false };
-        }
-
-        // Attempt to parse the order locally
-        const quantity = extractQuantity(m);
-        const product = findProduct(m);
-
-        // If we found a HIGHER CONFIDENCE match (approximate check)
-        // We verify if the message is relatively short
-        if (product && m.length < 60) {
-            const totalPrice = product.price * quantity;
-            return {
-                handled: true,
-                response: `✅ ঠিক আছে! **${quantity}x ${product.name}** আপনার ব্যাগে যোগ করা হয়েছে। ✨\n💰 মোট মূল্য: ₹${totalPrice}`,
-                actionType: 'item_added',
-                cartItems: [{
-                    name: product.name,
-                    price: product.price,
-                    quantity: quantity
-                }],
-                suggestedItems: ['আর কিছু দেখবেন?', '👘 পাঞ্জাবী', '👗 ব্লাউজ']
-            };
-        }
-
-        // If keyword present but no clear item found, OR sentence too long/complex -> Fallback to Gemini
+        // ... local order logic ...
         return { handled: false };
     }
+    */
 
     // 1. Greeting
     if (hasKeyword(m, intentPatterns.greeting) && m.length < 25) {
@@ -309,97 +284,14 @@ export async function tryLocalResponse(message: string): Promise<LocalAIResponse
     }
 
     // 2. "What to wear?"
+    /* Disable local suggestions */
     if (hasKeyword(m, intentPatterns.whatToWear)) {
-        const randomItems = getRandomItems(8);
-        return {
-            handled: true,
-            response: "🤔 কি পরবেন বুঝতে পারছেন না? \n\n✨ আমাদের কিছু এক্সক্লুসিভ কালেকশন দেখুন:",
-            recommendedProducts: randomItems.map(i => ({
-                name: i.name,
-                price: i.price,
-                description: i.description,
-                rating: i.rating,
-                ratingsCount: i.ratingsCount,
-                image: getImageUrl(i.name)
-            })),
-            suggestedItems: ['🏆 বেস্ট সেলার', '👘 পাঞ্জাবী', '👗 ব্লাউজ'],
-            actionType: 'product_recommendation'
-        };
+        return { handled: false };
     }
 
-    // 3. Smart Filters (Bengali + English)
-    const doc = nlp(m);
-    const isMen = doc.has('men') || doc.has('male') || doc.has('chhele') || m.includes('পাঞ্জাবি');
-    const isWomen = doc.has('women') || doc.has('female') || doc.has('meye') || m.includes('শাড়ি');
-    const isSilk = doc.has('silk') || doc.has('সিল্ক');
-    const isBudget = doc.has('cheap') || doc.has('sosta') || doc.has('kom dam') || doc.has('budget') || doc.has('under');
-
-    // Filter Logic
-    if (isMen || isWomen || isSilk || isBudget) {
-        let filteredItems = allItems;
-
-        if (isMen) filteredItems = filteredItems.filter(i =>
-            i.name.toLowerCase().includes('punjabi') ||
-            i.name.toLowerCase().includes('men')
-        );
-
-        if (isWomen) filteredItems = filteredItems.filter(i =>
-            i.name.toLowerCase().includes('saree') ||
-            i.name.toLowerCase().includes('blouse') ||
-            i.name.toLowerCase().includes('women')
-        );
-
-        if (isSilk) filteredItems = filteredItems.filter(i =>
-            i.name.toLowerCase().includes('silk') ||
-            i.description?.toLowerCase().includes('silk')
-        );
-
-        if (isBudget) {
-            // Try to find a price limit numbers
-            const priceLimit = extractQuantity(m); // Reusing extractQuantity might return small nums, let's look for larger numbers
-            const largeNumMatch = m.match(/(\d{2,3})/);
-            const limit = largeNumMatch ? parseInt(largeNumMatch[1]) : 150; // Default 150 if "cheap" is said without number
-            filteredItems = filteredItems.filter(i => i.price <= limit);
-            filteredItems.sort((a, b) => a.price - b.price); // Sort cheaper first
-        } else {
-            filteredItems.sort((a, b) => b.ratingsCount - a.ratingsCount); // Otherwise popularity sort
-        }
-
-        if (filteredItems.length > 0) {
-            const topResults = filteredItems.slice(0, 8);
-            return {
-                handled: true,
-                response: `🔍 আপনার পছন্দের **${isMen ? 'Men 🤵' : ''} ${isWomen ? 'Women 👗' : ''} ${isSilk ? 'Silk ✨' : ''}** কালেকশন এখানে আছে:`,
-                recommendedProducts: topResults.map(i => ({
-                    name: i.name,
-                    price: i.price,
-                    description: i.description,
-                    rating: i.rating,
-                    ratingsCount: i.ratingsCount,
-                    image: getImageUrl(i.name)
-                })),
-                actionType: 'product_recommendation',
-                suggestedItems: ['আর কিছু?', '👘 পাঞ্জাবী', '👗 ব্লাউজ']
-            };
-        }
-    }
-
-    // 4. Today's special / New items
+    /* Disable local special products */
     if (hasKeyword(m, intentPatterns.todaySpecial)) {
-        const topItems = getTopItems(8);
-        return {
-            handled: true,
-            response: "✨ আমাদের নতুন এবং জনপ্রিয় কালেকশন:\n\n🔥 এগুলো বর্তমানে ট্রেন্ডিং!",
-            recommendedProducts: topItems.map(i => ({
-                name: i.name,
-                price: i.price,
-                description: i.description,
-                rating: i.rating,
-                ratingsCount: i.ratingsCount,
-                image: getImageUrl(i.name)
-            })),
-            actionType: 'product_recommendation'
-        };
+        return { handled: false };
     }
 
     // 4. Location query
@@ -429,176 +321,8 @@ export async function tryLocalResponse(message: string): Promise<LocalAIResponse
         };
     }
 
-    // 7. Quick delivery / Standard items
-    if (hasKeyword(m, intentPatterns.quick)) {
-        const quickItems = getProductsByCategory(['Embroidered Punjabis', 'Designer Blouses']);
-        return {
-            handled: true,
-            response: "⚡ **দ্রুত ডেলিভারি:**\n\nএই আইটেমগুলো আমাদের স্টকে রেডি আছে:",
-            recommendedProducts: quickItems.map(i => ({
-                name: i.name,
-                price: i.price,
-                description: i.description,
-                rating: i.rating,
-                ratingsCount: i.ratingsCount,
-                image: getImageUrl(i.name)
-            })),
-            actionType: 'product_recommendation'
-        };
-    }
-
-    // 8. Premium items
-    if (hasKeyword(m, intentPatterns.expensive)) {
-        const premiumItems = getPremiumItems(200);
-        return {
-            handled: true,
-            response: "👑 **আমাদের প্রিমিয়াম কালেকশন:**\n\nসেরা মানের এবং এক্সক্লুসিভ ডিজাইন:",
-            recommendedProducts: premiumItems.map(i => ({
-                name: i.name,
-                price: i.price,
-                description: i.description,
-                rating: i.rating,
-                ratingsCount: i.ratingsCount,
-                image: getImageUrl(i.name)
-            })),
-            actionType: 'product_recommendation'
-        };
-    }
-
-    // 9. Price lookup
-    if (hasKeyword(m, intentPatterns.price)) {
-        const product = findProduct(m);
-        if (product) {
-            return {
-                handled: true,
-                response: `👘 **${product.name}**\n💰 মূল্য: ${formatPrice(product)}\n⭐ ${product.rating}/5 (${product.ratingsCount} জন পছন্দ করেছেন)\n\n📝 ${product.description}\n\n👉 অর্ডার করতে **"ব্যাগ এ দাও"** বলুন!`,
-                suggestedProduct: product.name,
-                recommendedProducts: [{
-                    name: product.name,
-                    price: product.price,
-                    description: product.description,
-                    rating: product.rating,
-                    ratingsCount: product.ratingsCount,
-                    image: getImageUrl(product.name)
-                }],
-                actionType: 'product_recommendation'
-            };
-        }
-    }
-
-    // 10. Category listing
-    const category = findCategory(m);
-    if (category && (hasKeyword(m, ['কি', 'ki', 'কী', 'show', 'দেখাও', 'list', 'menu', 'মেনু', 'আছে', 'ache', 'দেখান', 'দিন']))) {
-        const products = category.products.slice(0, 15);
-        return {
-            handled: true,
-            response: `🛍️ **${category.name}** (${category.products.length}টি আইটেম):\n\nসব ${category.name} নিচে দেখুন 👇`,
-            recommendedProducts: products.map(i => ({
-                name: i.name,
-                price: i.price,
-                description: i.description,
-                rating: i.rating,
-                ratingsCount: i.ratingsCount,
-                image: getImageUrl(i.name)
-            })),
-            actionType: 'general'
-        };
-    }
-
-    // 11. Popular/Best items
-    if (hasKeyword(m, intentPatterns.popular)) {
-        const topItems = getTopItems(12);
-        return {
-            handled: true,
-            response: `🏆 **আমাদের বেস্ট সেলার কালেকশন!**\n\n🔥 এগুলো বর্তমানে সবচেয়ে বেশি জনপ্রিয়:`,
-            recommendedProducts: topItems.map(i => ({
-                name: i.name,
-                price: i.price,
-                description: i.description,
-                rating: i.rating,
-                ratingsCount: i.ratingsCount,
-                image: getImageUrl(i.name)
-            })),
-            actionType: 'product_recommendation'
-        };
-    }
-
-    // 12. Budget/Affordable items
-    if (hasKeyword(m, intentPatterns.cheap)) {
-        const priceMatch = m.match(/(\d+)/);
-        const maxPrice = priceMatch ? parseInt(priceMatch[1]) : 1000;
-
-        const cheapItems = getBudgetItems(maxPrice);
-        if (cheapItems.length > 0) {
-            return {
-                handled: true,
-                response: `💰 **সাশ্রয়ী কালেকশন (₹${maxPrice} এর নিচে):**\n\n✨ কম দামে সেরা কোয়ালিটি:`,
-                recommendedProducts: cheapItems.slice(0, 12).map(i => ({
-                    name: i.name,
-                    price: i.price,
-                    description: i.description,
-                    rating: i.rating,
-                    ratingsCount: i.ratingsCount,
-                    image: getImageUrl(i.name)
-                })),
-                actionType: 'product_recommendation'
-            };
-        }
-    }
-
-    // 13. Direct product mention (info only)
-    const directProduct = findProduct(m);
-    if (directProduct && m.split(/\s+/).length <= 3) {
-        return {
-            handled: true,
-            response: `👘 **${directProduct.name}**\n💰 ${formatPrice(directProduct)}\n⭐ ${directProduct.rating}/5 (${directProduct.ratingsCount} reviews)\n\n📝 ${directProduct.description}\n\n👉 অর্ডার করতে **"ব্যাগ এ দাও"** বলুন!`,
-            recommendedProducts: [{
-                name: directProduct.name,
-                price: directProduct.price,
-                description: directProduct.description,
-                rating: directProduct.rating,
-                ratingsCount: directProduct.ratingsCount,
-                image: getImageUrl(directProduct.name)
-            }],
-            actionType: 'product_recommendation'
-        };
-    }
-
-    // 14. Category name directly
-    if (category) {
-        const products = category.products.slice(0, 12);
-        return {
-            handled: true,
-            response: `🛍️ **${category.name}:**\n\nবেছে নিন আপনার পছন্দের ডিজাইন:`,
-            recommendedProducts: products.map(i => ({
-                name: i.name,
-                price: i.price,
-                description: i.description,
-                rating: i.rating,
-                ratingsCount: i.ratingsCount,
-                image: getImageUrl(i.name)
-            })),
-            actionType: 'product_recommendation'
-        };
-    }
-
-    // 16. "Something else" / "Other" / "Variety"
-    if (m.includes('other') || m.includes('onno') || m.includes('variety') || m.includes('change') || m.includes('different') || m.includes('আর কি') || m.includes('bad dao') || m.includes('অন্য')) {
-        const randomItems = getRandomItems(8);
-        return {
-            handled: true,
-            response: `আচ্ছা! 🤔 তাহলে, আপনি কি আরও কিছু ইউনিক কালেকশন দেখতে চান?\n✨`,
-            recommendedProducts: randomItems.map(i => ({
-                name: i.name,
-                price: i.price,
-                description: i.description,
-                rating: i.rating,
-                ratingsCount: i.ratingsCount,
-                image: getImageUrl(i.name)
-            })),
-            actionType: 'product_recommendation',
-        };
-    }
+    /* Fallback to Gemini for everything else product-related */
+    return { handled: false };
 
     // Not handled locally → fallback to Gemini
     return { handled: false };

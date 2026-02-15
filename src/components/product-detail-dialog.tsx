@@ -318,8 +318,10 @@ export const ProductDetailDialog = ({
                                             <Plus className="h-6 w-6" />
                                         </Button>
                                     </div>
-                                    <Button size="lg" className="h-14 px-6 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-xl shadow-lg border-none" onClick={() => setIsOrderFormOpen(true)}>
-                                        <Phone className="h-5 w-5" />
+                                    <Button size="lg" className="h-14 px-6 bg-[#3A2A1F] hover:bg-[#2a1e16] text-white rounded-xl shadow-lg border-none" asChild>
+                                        <Link href={`tel:${config.contact.phone}`} onClick={(e) => e.stopPropagation()}>
+                                            <Phone className="h-5 w-5" />
+                                        </Link>
                                     </Button>
                                 </div>
                             ) : (
@@ -327,8 +329,10 @@ export const ProductDetailDialog = ({
                                     <Button size="lg" className="flex-grow h-14 bg-primary hover:bg-primary/90 text-white rounded-xl shadow-premium font-bold text-lg" onClick={() => onAddToCart(item, selectedSize)}>
                                         <ShoppingCart className="mr-2 h-6 w-6" /> Add for ₹{item.price}
                                     </Button>
-                                    <Button size="lg" className="h-14 px-4 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-xl shadow-lg border-none" onClick={() => setIsOrderFormOpen(true)}>
-                                        <Phone className="h-6 w-6" />
+                                    <Button size="lg" className="h-14 px-4 bg-[#3A2A1F] hover:bg-[#2a1e16] text-white rounded-xl shadow-lg border-none" asChild>
+                                        <Link href={`tel:${config.contact.phone}`} onClick={(e) => e.stopPropagation()}>
+                                            <Phone className="h-6 w-6" />
+                                        </Link>
                                     </Button>
                                 </div>
                             );

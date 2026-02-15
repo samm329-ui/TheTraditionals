@@ -222,7 +222,13 @@ const prompt = ai.definePrompt({
           - Set actionType to 'add_to_cart'
           - Say: "🎉 দারুণ! Cart এ add হয়ে গেছে! ধন্যবাদ!"
     
-    6. **CRITICAL**: Use EXACT names from CATALOG in cartItems. Calculate totalPrice correctly.
+    6. **RELEVANCE RULES** (CRITICAL):
+       - If the user asks for a specific CATEGORY (e.g. "Blouse"), ONLY suggest products from that category.
+       - If they ask for "Budget" or "Cheap", only suggest items < ₹1000.
+       - If they ask for "Premium" or "High end", only suggest items > ₹1500.
+       - VARIETY: Never suggest the same 3 items thrice in a row. Use history to pivot.
+    
+    7. **CRITICAL**: Use EXACT names from CATALOG in cartItems. Calculate totalPrice correctly.
     
     === EXAMPLE FLOW ===
     User: "Premium Punjabi দাও"

@@ -14,7 +14,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 const collections = [
     { id: 'punjabi-collection', name: 'Embroidered Punjabis', image: 'Black Detailed Needlework Punjabi' },
     { id: 'blouse-collection', name: 'Designer Blouses', image: 'Royal Pink Reversed Design Blouse' },
-    { id: 'saree-collection', name: 'Occasion Sarees', image: 'Gold Zari Work Saree' },
+    { id: 'saree-collection', name: 'Occasion Sarees', image: 'Tasar Needlework Saree' },
     { id: 'custom-stitching', name: 'Custom Stitching', image: 'White Reversed Design Blouse' },
 ];
 
@@ -71,7 +71,7 @@ const MenuSection = () => {
                                             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-500 z-10" />
                                             {imageData && (
                                                 <Image
-                                                    src={imageData.imageUrl}
+                                                    src={imageData.imageUrl.replace('.png', '.webp')}
                                                     alt={collection.name}
                                                     fill
                                                     sizes="(max-width: 640px) 80vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -80,7 +80,7 @@ const MenuSection = () => {
                                             )}
 
                                             {/* Card Overlay */}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 transition-opacity duration-300 z-20" />
+                                            <div className="absolute top-1/2 bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-90 transition-opacity duration-300 z-20" />
 
                                             <div className="absolute bottom-0 left-0 w-full p-6 z-30 transform transition-transform duration-300 group-hover:-translate-y-2">
                                                 <h3 className="text-2xl font-heading font-bold text-white mb-2 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
@@ -118,13 +118,13 @@ const MenuSection = () => {
                                 >
                                     {imageData && (
                                         <Image
-                                            src={imageData.imageUrl}
+                                            src={imageData.imageUrl.replace('.png', '.webp')}
                                             alt={collection.name}
                                             fill
                                             className="object-cover transition-transform duration-500 group-active:scale-105"
                                         />
                                     )}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90" />
+                                    <div className="absolute top-1/2 bottom-0 inset-x-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-90" />
                                     <div className="absolute bottom-0 left-0 w-full p-3">
                                         <h3 className={cn(
                                             "font-heading font-bold text-white leading-tight",

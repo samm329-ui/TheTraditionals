@@ -101,6 +101,12 @@
       "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/Banner/banner%202.png",
       "description": "Menu Page 5",
       "imageHint": "menu"
+    },
+    {
+      "id": "Tasar Needlework Saree",
+      "imageUrl": "https://hfnxpkqoejlvqjakrbtb.supabase.co/storage/v1/object/public/assets/clothes/Saree/S3/Gemini_Generated_Image_2k52bm2k52bm2k52.webp",
+      "description": "Tasar Needlework Saree",
+      "imageHint": "saree"
     }
   ]
 }
