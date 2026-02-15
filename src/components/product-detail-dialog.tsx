@@ -147,8 +147,8 @@ export const ProductDetailDialog = ({
                                             </CarouselContent>
                                             {item.images.length > 1 && (
                                                 <>
-                                                    <CarouselPrevious className="left-2 opacity-0 group-hover:opacity-100 transition-opacity bg-background/50 border-none" />
-                                                    <CarouselNext className="right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-background/50 border-none" />
+                                                    <CarouselPrevious className="left-2 hidden md:flex opacity-100 bg-background/80 hover:bg-background border-none shadow-md h-10 w-10 text-primary" />
+                                                    <CarouselNext className="right-2 hidden md:flex opacity-100 bg-background/80 hover:bg-background border-none shadow-md h-10 w-10 text-primary" />
                                                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 px-3 py-1.5 rounded-full bg-black/20 backdrop-blur-md z-10">
                                                         {item.images.map((_, i) => (
                                                             <div key={i} className="w-1.5 h-1.5 rounded-full bg-white opacity-50" />
@@ -311,7 +311,7 @@ export const ProductDetailDialog = ({
                     </ScrollArea>
 
                     {/* Mobile Sticky CTA */}
-                    <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/80 backdrop-blur-lg border-t md:hidden z-50">
+                    <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/80 backdrop-blur-lg border-t md:hidden z-[101]">
                         {(() => {
                             const currentSizeCartItem = cart.find(ci => ci.name === item.name && ci.selectedSize === selectedSize);
                             return currentSizeCartItem ? (

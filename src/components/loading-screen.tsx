@@ -30,15 +30,7 @@ const LoadingScreen = ({ isLoading }: LoadingScreenProps) => {
             }}
             className="flex flex-col items-center"
           >
-            <h1 className="text-4xl md:text-5xl font-heading font-bold tracking-widest text-[#3A2A1F] relative">
-              {config.brandName}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-[#C8A165]/30 to-transparent"
-                initial={{ x: "-100%" }}
-                animate={{ x: "100%" }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              />
-            </h1>
+            <div className="sr-only">{config.brandName}</div>
             <div className="mt-8 relative h-12 w-12">
               <motion.div
                 className="absolute inset-0 rounded-full border-t-2 border-r-2 border-[#C8A165]"
