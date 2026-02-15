@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { Home, Info, ShoppingCart, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { GoogleMapsIcon } from './icons';
+import { createPortal } from 'react-dom';
+import { useState, useEffect } from 'react';
 
 import { config } from '@/lib/utils';
 
@@ -23,7 +25,16 @@ const navItems = [
 ];
 
 export function MobileBottomNav({ cartCount, onCartClick, onMenuClick, onAIClick }: MobileBottomNavProps) {
-  return (
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  if (!mounted) return null;
+
+  return createPortal(
     <nav className="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-[#fcf7f3] border-t border-[#E5D3B3]/40 shadow-[0_-4px_10px_rgba(0,0,0,0.03)] z-[100] rounded-t-2xl">
       <div className="grid h-full grid-cols-5 items-center px-1">
         {navItems.map((item) => {
@@ -107,6 +118,7 @@ export function MobileBottomNav({ cartCount, onCartClick, onMenuClick, onAIClick
           );
         })}
       </div>
-    </nav>
+    </nav>,
+    document.body
   );
 }

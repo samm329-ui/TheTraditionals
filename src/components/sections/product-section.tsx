@@ -847,10 +847,52 @@ const ProductCategory = ({
 }
 
 
+const StyleTipDialog = ({ isOpen, onOpenChange, tip }: { isOpen: boolean, onOpenChange: (open: boolean) => void, tip: string }) => {
+    return (
+        <Dialog open={isOpen} onOpenChange={onOpenChange}>
+            <DialogContent className="w-[90vw] max-w-[400px] rounded-3xl border-[#C8A165]/40 bg-[#fcf7f3] p-0 overflow-hidden z-[110]">
+                <div className="relative p-8 text-center">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#C8A165]/40 to-transparent" />
+                    <div className="mb-6 inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#C8A165]/10 text-[#C8A165]">
+                        <Sparkles className="h-10 w-10" />
+                    </div>
+                    <DialogHeader className="mb-6">
+                        <DialogTitle className="font-heading text-2xl text-[#3A2A1F] text-center">Style Tip</DialogTitle>
+                    </DialogHeader>
+                    <div className="bg-white/50 rounded-2xl p-6 border border-[#C8A165]/20 shadow-inner">
+                        <p className="text-[#3A2A1F] text-[16px] font-medium leading-relaxed italic">
+                            "{tip}"
+                        </p>
+                    </div>
+                    <div className="mt-8">
+                        <Button
+                            onClick={() => onOpenChange(false)}
+                            className="w-full bg-[#3A2A1F] hover:bg-[#2A1F18] text-white rounded-xl h-12 text-sm font-semibold tracking-wide uppercase shadow-lg shadow-[#3A2A1F]/10"
+                        >
+                            Got it, thanks!
+                        </Button>
+                    </div>
+                    <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#C8A165]/40 to-transparent" />
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
+};
+
+
 const MobileProductFilters = React.memo(({ allCategories, handleOpenCategoryDialog }: {
     allCategories: Category[];
     handleOpenCategoryDialog: (category: Category) => void;
 }) => {
+    const [isTipOpen, setIsTipOpen] = React.useState(false);
+    const [currentTip, setCurrentTip] = React.useState('');
+
+    const handleTipClick = () => {
+        const randomTip = styleTips[Math.floor(Math.random() * styleTips.length)];
+        setCurrentTip(randomTip);
+        setIsTipOpen(true);
+    };
+
     return (
         <div className="mx-4 mt-6">
             <div className="bg-white rounded-xl shadow-filters p-2 border border-[#C8A165]/20">
@@ -893,15 +935,18 @@ const MobileProductFilters = React.memo(({ allCategories, handleOpenCategoryDial
                     <Button
                         variant="outline"
                         className="h-12 w-full rounded-xl border-[#C8A165]/40 text-[#3A2A1F] hover:bg-[#F6F2EB] flex items-center justify-center gap-2 font-medium text-[14px] px-4"
-                        onClick={() => {
-                            const randomTip = styleTips[Math.floor(Math.random() * styleTips.length)];
-                            alert(`✨ Style Tip:\n\n${randomTip}`);
-                        }}
+                        onClick={handleTipClick}
                     >
                         Style Tip
                     </Button>
                 </div>
             </div>
+
+            <StyleTipDialog
+                isOpen={isTipOpen}
+                onOpenChange={setIsTipOpen}
+                tip={currentTip}
+            />
         </div>
     );
 });
