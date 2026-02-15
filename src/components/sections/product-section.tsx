@@ -898,7 +898,6 @@ const MobileProductFilters = React.memo(({ allCategories, handleOpenCategoryDial
                             alert(`✨ Style Tip:\n\n${randomTip}`);
                         }}
                     >
-                        <Sparkles className="h-4 w-4 text-[#C8A165]" />
                         Style Tip
                     </Button>
                 </div>

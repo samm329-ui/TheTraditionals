@@ -83,7 +83,7 @@ export function Footer() {
             <div className="container mx-auto grid w-full gap-10 xl:grid-cols-3 xl:gap-12 relative z-10">
                 <AnimatedContainer className="space-y-6 flex flex-col items-center md:items-start text-center md:text-left">
                     <div className="font-heading font-bold text-2xl md:text-3xl text-primary tracking-wide leading-none">
-                        The <br /> Traditional
+                        The Traditionals
                     </div>
                     <p className="text-[#F6F2EB]/60 text-sm max-w-xs font-light leading-relaxed">
                         Premium traditional clothing blending heritage craftsmanship with modern elegance. Experience the art of Bengali embroidery.

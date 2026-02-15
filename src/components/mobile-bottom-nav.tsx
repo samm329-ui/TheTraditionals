@@ -24,7 +24,7 @@ const navItems = [
 
 export function MobileBottomNav({ cartCount, onCartClick, onMenuClick, onAIClick }: MobileBottomNavProps) {
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-[#fcf7f3] border-t border-[#E5D3B3]/40 shadow-[0_-4px_10px_rgba(0,0,0,0.03)] z-50 rounded-t-2xl">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-[#fcf7f3] border-t border-[#E5D3B3]/40 shadow-[0_-4px_10px_rgba(0,0,0,0.03)] z-[100] rounded-t-2xl">
       <div className="grid h-full grid-cols-5 items-center px-1">
         {navItems.map((item) => {
           const isExternal = item.href.startsWith('http');

@@ -73,7 +73,7 @@ const MobileSearchHeader = ({ onSearch, searchQuery, allMenuItems, onProductSele
                         <div className="flex-shrink-0">
                             <Link href="/">
                                 <div className="font-heading font-bold text-lg text-primary tracking-wide leading-none">
-                                    The <br /> Traditional
+                                    The Traditionals
                                 </div>
                             </Link>
                         </div>
