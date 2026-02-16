@@ -4,11 +4,26 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.thetraditionaln
 
 export default function robots(): MetadataRoute.Robots {
     return {
-        rules: {
-            userAgent: '*',
-            allow: '/',
-            disallow: ['/api/', '/admin/'],
-        },
+        rules: [
+            {
+                userAgent: '*',
+                allow: '/',
+                disallow: ['/api/', '/admin/'],
+            },
+            {
+                userAgent: 'Googlebot',
+                allow: '/',
+                disallow: ['/api/', '/admin/'],
+            },
+            {
+                userAgent: 'Googlebot-Image',
+                allow: '/',
+            },
+            {
+                userAgent: ['GPTBot', 'CCBot', 'Google-Extended', 'ClaudeBot'],
+                allow: '/',
+            }
+        ],
         sitemap: `${siteUrl}/sitemap.xml`,
     };
 }
